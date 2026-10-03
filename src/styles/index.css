@@ -50,11 +50,23 @@ h3 { color: var(--ink); font-size: 13px; font-weight: 550; line-height: 1.6; mar
 .text-link { font-size: 12px; color: var(--muted); }
 .text-link span { margin-left: 6px; }
 .text-link:hover, footer a:hover { color: var(--ink); }
-.tools { list-style: none; padding: 0; margin: 16px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
-.tools li { padding: 3px 10px; border: 1px solid var(--line); border-radius: 5px; font-size: 11px; color: var(--accent); background: var(--surface); }
-.tools li:nth-child(4n + 2) { color: var(--green); background: var(--green-bg); }
-.tools li:nth-child(4n + 3) { color: var(--blue); background: var(--blue-bg); }
-.tools li:nth-child(4n) { color: var(--rose); background: var(--rose-bg); }
+.stack { display: flex; flex-wrap: wrap; gap: 6px 12px; margin-top: 9px; }
+.stack-item { display: inline-flex; align-items: center; gap: 5px; }
+.stack-item img { object-fit: contain; }
+.motion-toggle { border: 0; padding: 3px 0 3px 8px; background: transparent; color: var(--muted); font-size: 10px; }
+.motion-toggle:hover { color: var(--accent); }
+.toolbox-cloud { margin-top: 20px; padding: 25px 18px; border: 1px solid var(--line); border-radius: 18px; background: radial-gradient(ellipse at top left, var(--blue-bg), transparent 65%), radial-gradient(ellipse at bottom right, var(--rose-bg), transparent 65%), var(--surface); }
+.tools { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px 10px; }
+.tools li { min-width: 0; animation: float-tool var(--float-duration) ease-in-out var(--float-delay) infinite; }
+.tool-tile { min-height: 83px; padding: 12px 3px 9px; display: flex; flex-direction: column; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 12px; background: var(--background); box-shadow: 0 5px 12px #30273e08; color: var(--ink); font-size: 9px; line-height: 1.5; text-align: center; transition: box-shadow .2s, border-color .2s; }
+.tool-tile:hover { border-color: var(--accent); box-shadow: 0 6px 16px #8053a11a; }
+.tool-logo { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 8px; background: #fff; }
+.tool-logo img { object-fit: contain; }
+.toolbox-cloud:hover li, .toolbox-cloud.is-paused li { animation-play-state: paused; }
+@keyframes float-tool { 0%, 100% { transform: translateY(3px) rotate(-1deg); } 50% { transform: translateY(-4px) rotate(1deg); } }
+@media (max-width: 480px) { .tools { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 15px 8px; } .toolbox-cloud { padding: 22px 12px; } }
+@media (max-width: 350px) { .tools { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (prefers-reduced-motion: reduce) { .tools li { animation: none; } }
 .inline-link { text-decoration: underline; text-decoration-color: var(--muted); text-underline-offset: 4px; }
 .github-link { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 12px; margin-top: 7px; color: var(--ink); }
 .github-link:hover { color: var(--accent); }
