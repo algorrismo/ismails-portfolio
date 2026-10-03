@@ -2,41 +2,107 @@
 import { profile } from '../data/portfolio';
 import { destinations } from '../data/navigation';
 const currentPath = Astro.url.pathname.replace(/\/$/, '');
+const pageIcons: Record<string, string> = {
+  projects: 'M4 7h6l2 2h8v11H4z M4 7V4h6l2 3h8v2',
+  stack: 'm12 3 9 5-9 5-9-5 9-5Z M3 12l9 5 9-5 M3 16l9 5 9-5',
+  notes: 'M6 3h9l4 4v14H6z M14 3v5h5 M9 12h7 M9 16h5',
+  uses: 'M4 4h16v12H4z M8 21h8 M12 16v5',
+  experiments: 'M9 3h6 M10 3v7l-6 9a1.3 1.3 0 0 0 1 2h14a1.3 1.3 0 0 0 1-2l-6-9V3 M8 15h8',
+};
+const themes = [
+  { value: 'light', label: 'Light', path: 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8 M12 2v2 M12 20v2 M2 12h2 M20 12h2 M5 5l1.5 1.5 M17.5 17.5 19 19 M5 19l1.5-1.5 M17.5 6.5 19 5' },
+  { value: 'dark', label: 'Dark', path: 'M20.5 13a8.5 8.5 0 0 1-9.5-9.5A8.5 8.5 0 1 0 20.5 13Z' },
+  { value: 'system', label: 'System', path: 'M3 4h18v13H3z M8 21h8 M12 17v4' },
+];
 ---
 <header>
   <a href="/" class="identity" aria-label={`${profile.name}, home`}>
     <img src="/avatar.jpg" alt="" width="32" height="32" />
     <span class="sr-only">{profile.name}</span>
   </a>
-  <div class="navigation">
-    <button type="button" class="menu-toggle" id="menu-toggle" aria-controls="navigation-panel" aria-expanded="false" hidden>
-      <span class="menu-label">Menu</span>
-      <svg class="menu-symbol" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14M5 12h14M5 18h14"/></svg>
-      <svg class="close-symbol" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg>
-    </button>
-    <div class="navigation-panel" id="navigation-panel" hidden>
-      <nav aria-label="Main navigation">
-        {destinations.map(({ slug, title }) => (
-          <a href={`/${slug}/`} aria-current={currentPath === `/${slug}` ? 'page' : undefined}>
-            <span>{title}</span><span class="destination-status">Soon <span aria-hidden="true">↗</span></span>
-          </a>
+  <div class="header-controls">
+    <div class="header-dropdown" data-dropdown="appearance">
+      <button type="button" class="header-toggle appearance-toggle" id="appearance-toggle" aria-label="Open appearance settings" title="Appearance" aria-controls="appearance-panel" aria-expanded="false" hidden>
+        {themes.map(theme => (
+          <svg data-theme-icon={theme.value} viewBox="0 0 24 24" aria-hidden="true" hidden={theme.value !== 'system'}><path d={theme.path}/></svg>
         ))}
-      </nav>
-      <div class="theme-picker" role="group" aria-labelledby="theme-label">
-        <span id="theme-label">Appearance</span>
-        <div class="theme-options">
-          {['Light', 'Dark', 'System'].map(theme => <button type="button" data-theme-choice={theme.toLowerCase()} aria-pressed="false">{theme}</button>)}
-        </div>
+      </button>
+      <div class="dropdown-panel appearance-panel" id="appearance-panel" role="group" aria-label="Appearance" hidden>
+        {themes.map(theme => (
+          <button type="button" class="dropdown-row" data-theme-choice={theme.value} aria-pressed="false">
+            <svg class="row-icon" viewBox="0 0 24 24" aria-hidden="true"><path d={theme.path}/></svg>
+            <span>{theme.label}</span>
+            <svg class="theme-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 12 4 4 8-8"/></svg>
+          </button>
+        ))}
+      </div>
+    </div>
+    <div class="header-dropdown" data-dropdown="navigation">
+      <button type="button" class="header-toggle" id="menu-toggle" aria-label="Open navigation" title="Navigation" aria-controls="navigation-panel" aria-expanded="false" hidden>
+        <svg class="menu-symbol" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/><path d="M17 3.5v7 M13.5 7h7"/></svg>
+        <svg class="close-symbol" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M7 17 17 7"/></svg>
+      </button>
+      <div class="dropdown-panel navigation-panel" id="navigation-panel" hidden>
+        <nav aria-label="Main navigation">
+          {destinations.map(({ slug, title }) => (
+            <a class="dropdown-row" href={`/${slug}/`} aria-current={currentPath === `/${slug}` ? 'page' : undefined}>
+              <svg class="row-icon" viewBox="0 0 24 24" aria-hidden="true"><path d={pageIcons[slug]}/></svg>
+              <span>{title}</span>
+              <svg class="row-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7 M7 7h10v10"/></svg>
+            </a>
+          ))}
+        </nav>
       </div>
     </div>
   </div>
 </header>
 <script>
-  const root = document.querySelector<HTMLElement>('.navigation')!;
-  const toggle = root.querySelector<HTMLButtonElement>('#menu-toggle')!;
-  const panel = root.querySelector<HTMLElement>('#navigation-panel')!;
-  const label = toggle.querySelector<HTMLElement>('.menu-label')!;
-  const choices = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-theme-choice]'));
+  const groups = Array.from(document.querySelectorAll<HTMLElement>('[data-dropdown]')).map(root => ({
+    root,
+    toggle: root.querySelector<HTMLButtonElement>('.header-toggle')!,
+    panel: root.querySelector<HTMLElement>('.dropdown-panel')!,
+  }));
+  function setOpen(group: typeof groups[number], open: boolean, returnFocus = false) {
+    group.panel.hidden = !open;
+    group.toggle.setAttribute('aria-expanded', String(open));
+    const name = group.root.dataset.dropdown === 'appearance' ? 'appearance settings' : 'navigation';
+    group.toggle.setAttribute('aria-label', `${open ? 'Close' : 'Open'} ${name}`);
+    if (returnFocus) group.toggle.focus();
+  }
+  function openGroup(group: typeof groups[number]) {
+    groups.forEach(other => setOpen(other, other === group));
+  }
+  groups.forEach(group => {
+    group.toggle.hidden = false;
+    group.toggle.addEventListener('click', () => group.panel.hidden ? openGroup(group) : setOpen(group, false));
+    group.root.addEventListener('focusout', event => {
+      if (!group.root.contains(event.relatedTarget as Node)) setOpen(group, false);
+    });
+    group.root.addEventListener('keydown', event => {
+      if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const items = Array.from(group.panel.querySelectorAll<HTMLElement>('a, button'));
+      if (group.panel.hidden) {
+        openGroup(group);
+        (event.key === 'ArrowUp' || event.key === 'End' ? items.at(-1) : items[0])?.focus();
+        return;
+      }
+      const index = items.indexOf(document.activeElement as HTMLElement);
+      const next = event.key === 'Home' ? 0 : event.key === 'End' ? items.length - 1 :
+        event.key === 'ArrowDown' ? (index + 1) % items.length : (index <= 0 ? items.length - 1 : index - 1);
+      items[next]?.focus();
+    });
+  });
+  document.addEventListener('click', event => {
+    groups.forEach(group => { if (!group.root.contains(event.target as Node)) setOpen(group, false); });
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape') return;
+    const open = groups.find(group => !group.panel.hidden);
+    if (open) { event.preventDefault(); setOpen(open, false, true); }
+  });
+  const choices = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-theme-choice]'));
+  const themeIcons = Array.from(document.querySelectorAll<SVGElement>('[data-theme-icon]'));
   const media = matchMedia('(prefers-color-scheme: dark)');
   let preference = 'system';
   try {
@@ -48,6 +114,8 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
     document.documentElement.dataset.theme = dark ? 'dark' : 'light';
     document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#111111' : '#fcfcfc');
     choices.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.themeChoice === preference)));
+    themeIcons.forEach(icon => icon.toggleAttribute('hidden', icon.dataset.themeIcon !== preference));
+    document.querySelector('#appearance-toggle')?.setAttribute('title', `Appearance: ${preference}`);
   }
   syncTheme();
   media.addEventListener('change', syncTheme);
@@ -55,40 +123,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
     preference = button.dataset.themeChoice!;
     try { localStorage.setItem('portfolio-theme', preference); } catch {}
     syncTheme();
+    const appearance = groups.find(group => group.root.dataset.dropdown === 'appearance')!;
+    setOpen(appearance, false, true);
   }));
-  function setOpen(open: boolean, returnFocus = false) {
-    panel.hidden = !open;
-    toggle.setAttribute('aria-expanded', String(open));
-    label.textContent = open ? 'Close' : 'Menu';
-    if (returnFocus) toggle.focus();
-  }
-  toggle.hidden = false;
-  toggle.addEventListener('click', () => setOpen(panel.hidden));
-  document.addEventListener('click', event => {
-    if (!root.contains(event.target as Node)) setOpen(false);
-  });
-  root.addEventListener('focusout', event => {
-    if (!root.contains(event.relatedTarget as Node)) setOpen(false);
-  });
-  document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && !panel.hidden) {
-      event.preventDefault();
-      setOpen(false, true);
-    }
-  });
-  root.addEventListener('keydown', event => {
-    if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
-    if (panel.hidden && event.target !== toggle) return;
-    event.preventDefault();
-    const items = Array.from(panel.querySelectorAll<HTMLElement>('a, button'));
-    if (panel.hidden) {
-      setOpen(true);
-      (event.key === 'ArrowUp' || event.key === 'End' ? items.at(-1) : items[0])?.focus();
-      return;
-    }
-    const index = items.indexOf(document.activeElement as HTMLElement);
-    const next = event.key === 'Home' ? 0 : event.key === 'End' ? items.length - 1 :
-      event.key === 'ArrowDown' ? (index + 1) % items.length : (index <= 0 ? items.length - 1 : index - 1);
-    items[next]?.focus();
-  });
 </script>
