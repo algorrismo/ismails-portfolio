@@ -1,0 +1,16 @@
+---
+import Page from '../layouts/Page.astro';
+import { destinations } from '../data/navigation';
+export function getStaticPaths() {
+  return destinations.map(destination => ({ params: { page: destination.slug }, props: { title: destination.title } }));
+}
+const { title } = Astro.props;
+---
+<Page title={`${title} — Ismail Hossain`}>
+  <div class="intro-heading"><h1>{title}</h1></div>
+  <section class="coming-soon" aria-labelledby="coming-soon-title">
+    <h2 id="coming-soon-title">Coming soon</h2>
+    <p>Something is taking shape here. Check back soon.</p>
+    <a class="back-home" href="/"><span aria-hidden="true">←</span> Back home</a>
+  </section>
+</Page>

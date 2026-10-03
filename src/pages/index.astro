@@ -1,7 +1,7 @@
 ---
-import '../styles/index.css';
+import Page from '../layouts/Page.astro';
 import { profile, projects, tools } from '../data/portfolio';
-const year = new Date().getFullYear();
+
 const icons: Record<string, string> = {
   pitch: 'M4 4h16v16H4z M12 4v16 M4 9h3v6H4 M20 9h-3v6h3 M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0',
   grid: 'M4 4h6v6H4z M14 4h6v6h-6z M4 14h6v6H4z M14 14h6v6h-6z',
@@ -9,44 +9,7 @@ const icons: Record<string, string> = {
   chart: 'M4 4v16h16 M8 15v-3 M12 15V8 M16 15V5',
 };
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f3f2ef" />
-    <meta name="description" content="Ismail Hossain's personal portfolio. Web interfaces, software projects, and experiments in code." />
-    <meta property="og:title" content="Ismail Hossain — Developer" />
-    <meta property="og:description" content="Building things. Learning along the way. Explore my projects and personal corner of the web." />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <title>Ismail Hossain — Developer</title>
-    <script is:inline>
-      try {
-        const saved = localStorage.getItem('portfolio-theme');
-        const dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
-      } catch {}
-    </script>
-  </head>
-  <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <div class="page">
-      <header>
-        <a href="#" class="identity" aria-label="Ismail Hossain, home">
-          <img src="/avatar.jpg" alt="" width="42" height="42" />
-          <span class="sr-only">Ismail Hossain</span>
-        </a>
-        <div class="header-actions">
-          <button class="icon-button" id="theme-toggle" aria-label="Switch to dark theme" hidden>
-            <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg>
-            <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14A8 8 0 0 1 10 4a8 8 0 1 0 10 10Z"/></svg>
-          </button>
-          <button class="icon-button menu-toggle" id="menu-toggle" aria-label="Open navigation" aria-haspopup="dialog" hidden>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M5 12h14M5 17h14"/></svg>
-          </button>
-        </div>
-      </header>
-      <main id="main">
+<Page>
         <div class="intro-heading">
           <h1>{profile.tagline}</h1>
 
@@ -63,6 +26,7 @@ const icons: Record<string, string> = {
           <h2 id="curiosity-title">What keeps me curious</h2>
           <p>I'm exploring the web, experimenting with new tools, and getting better with every project. This is my little space to share that progress.</p>
         </section>
+        {/* Projects and everyday stack: saved for a later step.
         <div class="explore" aria-label="Explore my work">
         <details name="explore" id="work">
           <summary>Projects <span aria-hidden="true">+</span></summary>
@@ -95,65 +59,14 @@ const icons: Record<string, string> = {
         </section>
         </details>
         </div>
+        */}
         <section id="connect" aria-labelledby="connect-title">
-          <h2 id="connect-title">Elsewhere</h2>
+          <h2 id="connect-title" class="sr-only">Elsewhere</h2>
 
-          <a class="github-link" href={profile.github} target="_blank" rel="noopener noreferrer">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.3-4.3-2.2-6-2.7m12 5v-3.9c0-1.1-.1-1.6-.6-2.2 3.1-.3 6.3-1.5 6.3-7A5.4 5.4 0 0 0 19.2 4c.1-.4.6-2-.1-3.6 0 0-1.2-.4-4 1.5a13.7 13.7 0 0 0-7.2 0C5.1 0 3.9.4 3.9.4 3.2 2 3.7 3.6 3.8 4a5.4 5.4 0 0 0-1.5 3.8c0 5.5 3.2 6.7 6.3 7-.4.5-.7 1.1-.6 2.2v4.3" transform="translate(1 1) scale(.9)"/></svg>
-            GitHub <span class="handle">@{profile.handle}</span><span aria-hidden="true">↗</span>
+          <a class="github-link" aria-label="Ismail on GitHub (opens in a new tab)" title="GitHub" href={profile.github} target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .75a11.25 11.25 0 0 0-3.56 21.92c.56.1.77-.24.77-.54v-2.1c-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.13.08 1.73 1.16 1.73 1.16 1 1.73 2.63 1.23 3.27.94.1-.73.4-1.23.72-1.51-2.5-.28-5.13-1.25-5.13-5.56 0-1.23.44-2.24 1.16-3.03-.12-.28-.5-1.43.11-2.98 0 0 .95-.31 3.09 1.16a10.76 10.76 0 0 1 5.62 0c2.15-1.47 3.09-1.16 3.09-1.16.61 1.55.23 2.7.11 2.98.72.79 1.16 1.8 1.16 3.03 0 4.32-2.63 5.28-5.14 5.56.4.35.76 1.03.76 2.08v3.1c0 .3.2.65.78.54A11.25 11.25 0 0 0 12 .75Z"/></svg>
+
           </a>
         </section>
-      </main>
-      <footer><span>© {year} {profile.name}</span><a href="#">Back to top <span aria-hidden="true">↑</span></a></footer>
-    </div>
-    <dialog id="navigation" aria-labelledby="navigation-title">
-      <div class="dialog-heading"><h2 id="navigation-title">Go somewhere</h2><button class="icon-button" id="close-menu" aria-label="Close navigation">×</button></div>
-      <nav aria-label="Page navigation">
-        <a href="#intro">Intro <span>01</span></a><a href="#work">Selected work <span>02</span></a><a href="#toolbox">Tools & technologies <span>03</span></a><a href="#connect">Elsewhere <span>04</span></a>
-      </nav>
-      <p class="menu-hint">Press <kbd>Esc</kbd> to close · <kbd>Ctrl K</kbd> to open</p>
-    </dialog>
-    <script>
-      const hashTarget = document.getElementById(location.hash.slice(1));
-      if (hashTarget instanceof HTMLDetailsElement) hashTarget.open = true;
-      const themeButton = document.querySelector<HTMLButtonElement>('#theme-toggle')!;
-      const themeMedia = matchMedia('(prefers-color-scheme: dark)');
-      function syncTheme(dark: boolean) {
-        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
-        themeButton.setAttribute('aria-label', `Switch to ${dark ? 'light' : 'dark'} theme`);
-        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#1e201f' : '#f3f2ef');
-      }
-      syncTheme(document.documentElement.dataset.theme === 'dark' || (!document.documentElement.dataset.theme && themeMedia.matches));
-      themeButton.hidden = false;
-      themeButton.addEventListener('click', () => {
-        const dark = document.documentElement.dataset.theme !== 'dark';
-        syncTheme(dark);
-        try { localStorage.setItem('portfolio-theme', dark ? 'dark' : 'light'); } catch {}
-      });
-      themeMedia.addEventListener('change', event => {
-        try { if (!localStorage.getItem('portfolio-theme')) syncTheme(event.matches); } catch { syncTheme(event.matches); }
-      });
-      const dialog = document.querySelector<HTMLDialogElement>('#navigation')!;
-      const menuButton = document.querySelector<HTMLButtonElement>('#menu-toggle')!;
-      menuButton.hidden = false;
-      menuButton.addEventListener('click', () => dialog.showModal());
-      document.querySelector('#close-menu')?.addEventListener('click', () => dialog.close());
-      dialog.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
-        dialog.close();
-        const target = document.querySelector<HTMLElement>(link.hash);
-        if (target) { if (target instanceof HTMLDetailsElement) target.open = true; target.setAttribute('tabindex', '-1'); target.focus({ preventScroll: true }); }
-      }));
-      dialog.addEventListener('click', event => {
-        if (event.target !== dialog) return;
-        const box = dialog.getBoundingClientRect();
-        if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) dialog.close();
-      });
-      document.addEventListener('keydown', event => {
-        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
-          event.preventDefault();
-          dialog.open ? dialog.close() : dialog.showModal();
-        }
-      });
-    </script>
-  </body>
-</html>
+
+</Page>

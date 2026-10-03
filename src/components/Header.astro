@@ -1,0 +1,94 @@
+---
+import { profile } from '../data/portfolio';
+import { destinations } from '../data/navigation';
+const currentPath = Astro.url.pathname.replace(/\/$/, '');
+---
+<header>
+  <a href="/" class="identity" aria-label={`${profile.name}, home`}>
+    <img src="/avatar.jpg" alt="" width="32" height="32" />
+    <span class="sr-only">{profile.name}</span>
+  </a>
+  <div class="navigation">
+    <button type="button" class="menu-toggle" id="menu-toggle" aria-controls="navigation-panel" aria-expanded="false" hidden>
+      <span class="menu-label">Menu</span>
+      <svg class="menu-symbol" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14M5 12h14M5 18h14"/></svg>
+      <svg class="close-symbol" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg>
+    </button>
+    <div class="navigation-panel" id="navigation-panel" hidden>
+      <nav aria-label="Main navigation">
+        {destinations.map(({ slug, title }) => (
+          <a href={`/${slug}/`} aria-current={currentPath === `/${slug}` ? 'page' : undefined}>
+            <span>{title}</span><span class="destination-status">Soon <span aria-hidden="true">↗</span></span>
+          </a>
+        ))}
+      </nav>
+      <div class="theme-picker" role="group" aria-labelledby="theme-label">
+        <span id="theme-label">Appearance</span>
+        <div class="theme-options">
+          {['Light', 'Dark', 'System'].map(theme => <button type="button" data-theme-choice={theme.toLowerCase()} aria-pressed="false">{theme}</button>)}
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<script>
+  const root = document.querySelector<HTMLElement>('.navigation')!;
+  const toggle = root.querySelector<HTMLButtonElement>('#menu-toggle')!;
+  const panel = root.querySelector<HTMLElement>('#navigation-panel')!;
+  const label = toggle.querySelector<HTMLElement>('.menu-label')!;
+  const choices = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-theme-choice]'));
+  const media = matchMedia('(prefers-color-scheme: dark)');
+  let preference = 'system';
+  try {
+    const saved = localStorage.getItem('portfolio-theme');
+    if (saved && ['light', 'dark', 'system'].includes(saved)) preference = saved;
+  } catch {}
+  function syncTheme() {
+    const dark = preference === 'dark' || (preference === 'system' && media.matches);
+    document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#111111' : '#fcfcfc');
+    choices.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.themeChoice === preference)));
+  }
+  syncTheme();
+  media.addEventListener('change', syncTheme);
+  choices.forEach(button => button.addEventListener('click', () => {
+    preference = button.dataset.themeChoice!;
+    try { localStorage.setItem('portfolio-theme', preference); } catch {}
+    syncTheme();
+  }));
+  function setOpen(open: boolean, returnFocus = false) {
+    panel.hidden = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+    label.textContent = open ? 'Close' : 'Menu';
+    if (returnFocus) toggle.focus();
+  }
+  toggle.hidden = false;
+  toggle.addEventListener('click', () => setOpen(panel.hidden));
+  document.addEventListener('click', event => {
+    if (!root.contains(event.target as Node)) setOpen(false);
+  });
+  root.addEventListener('focusout', event => {
+    if (!root.contains(event.relatedTarget as Node)) setOpen(false);
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !panel.hidden) {
+      event.preventDefault();
+      setOpen(false, true);
+    }
+  });
+  root.addEventListener('keydown', event => {
+    if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
+    if (panel.hidden && event.target !== toggle) return;
+    event.preventDefault();
+    const items = Array.from(panel.querySelectorAll<HTMLElement>('a, button'));
+    if (panel.hidden) {
+      setOpen(true);
+      (event.key === 'ArrowUp' || event.key === 'End' ? items.at(-1) : items[0])?.focus();
+      return;
+    }
+    const index = items.indexOf(document.activeElement as HTMLElement);
+    const next = event.key === 'Home' ? 0 : event.key === 'End' ? items.length - 1 :
+      event.key === 'ArrowDown' ? (index + 1) % items.length : (index <= 0 ? items.length - 1 : index - 1);
+    items[next]?.focus();
+  });
+</script>
