@@ -54,6 +54,7 @@ p { margin: 0; }
 .dropdown-row:hover, .dropdown-row[aria-current='page'] { background: var(--surface); }
 .dropdown-row:focus-visible { outline-offset: -2px; }
 .dropdown-row .row-icon { width: 15px; height: 15px; flex-shrink: 0; color: var(--muted); stroke-width: 1.5; }
+.navigation-panel .row-icon { width: 18px; height: 18px; stroke-width: 1.6; }
 .row-arrow, .theme-check { margin-left: auto; width: 13px; height: 13px; color: var(--muted); }
 .row-arrow { opacity: 0; transform: translate(-2px, 2px); transition: opacity 140ms, transform 140ms; }
 .dropdown-row:hover .row-arrow, .dropdown-row:focus-visible .row-arrow, .dropdown-row[aria-current='page'] .row-arrow { opacity: 1; transform: none; }
