@@ -1,19 +1,19 @@
-:root { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #343633; background: #fcfcfb; --background: #fcfcfb; --ink: #242623; --muted: #72766f; --line: #e8eae5; --surface: #f2f4ef; --accent: #53704c; color-scheme: light; font-synthesis: none; }
-:root[data-theme='dark'] { color: #d1d4cd; background: #171817; --background: #171817; --ink: #eeefe9; --muted: #9b9f95; --line: #30332d; --surface: #232620; --accent: #aac69b; color-scheme: dark; }
+:root { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #44404d; background: #fcfaf8; --background: #fcfaf8; --ink: #30273e; --muted: #756b7e; --line: #e8e0ed; --surface: #f1ebf7; --accent: #8053a1; --rose: #aa536d; --green: #3c7962; --blue: #466fa4; --gold: #916829; --rose-bg: #f9e9ee; --green-bg: #e7f2eb; --blue-bg: #e9effb; --gold-bg: #f7eedc; color-scheme: light; font-synthesis: none; }
+:root[data-theme='dark'] { color: #d9d1e1; background: #1b1922; --background: #1b1922; --ink: #f2eaf8; --muted: #b3a5c0; --line: #393044; --surface: #2c2338; --accent: #c2a1e5; --rose: #eca7bb; --green: #9bccb4; --blue: #a6c1f0; --gold: #e4c48c; --rose-bg: #35232e; --green-bg: #20342c; --blue-bg: #242d42; --gold-bg: #373023; color-scheme: dark; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 32px; }
-body { margin: 0; font-size: 14px; line-height: 1.85; -webkit-font-smoothing: antialiased; }
+body { background: radial-gradient(ellipse 650px 450px at 20% 0%, color-mix(in srgb, var(--surface) 85%, transparent), transparent), radial-gradient(ellipse 550px 420px at 90% 20%, color-mix(in srgb, var(--rose-bg) 65%, transparent), transparent); margin: 0; font-size: 14px; line-height: 1.85; -webkit-font-smoothing: antialiased; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; cursor: pointer; }
 button[hidden] { display: none; }
 button, a { -webkit-tap-highlight-color: transparent; }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; border-radius: 3px; }
 section:focus { outline: none; }
-::selection { background: #d4dfc9; color: #242623; }
+::selection { background: #e5d4f2; color: #30273e; }
 .page { width: min(100%, 560px); padding: 0 28px; margin: 0 auto; }
 header { display: flex; align-items: center; justify-content: space-between; padding: 48px 0 43px; }
 .identity { display: flex; gap: 11px; align-items: center; font-size: 12px; font-weight: 500; color: var(--ink); }
-.identity img { border-radius: 50%; object-fit: cover; filter: grayscale(1); border: 1px solid var(--line); }
+.identity img { border-radius: 50%; object-fit: cover; border: 2px solid var(--background); box-shadow: 0 0 0 2px var(--line); }
 .header-actions { display: flex; gap: 6px; }
 .icon-button { width: 36px; height: 36px; padding: 9px; border: 0; background: transparent; color: var(--muted); display: grid; place-items: center; border-radius: 5px; }
 .icon-button:hover { background: var(--surface); color: var(--ink); }
@@ -22,10 +22,11 @@ svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width:
 [data-theme='dark'] .sun { display: block; }
 [data-theme='dark'] .moon { display: none; }
 .intro-heading { margin-bottom: 43px; }
+.intro-heading::before { content: ""; display: block; width: 42px; height: 3px; border-radius: 2px; margin-bottom: 20px; background: linear-gradient(90deg, var(--accent), var(--rose), var(--gold)); }
 h1 { font-family: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif; color: var(--ink); font-size: clamp(23px, 5.6vw, 28px); font-weight: 400; font-style: italic; line-height: 1.4; letter-spacing: -.65px; margin: 0; }
 .subtitle { color: var(--muted); font-size: 12px; margin: 9px 0 0; }
 section { margin-bottom: 44px; }
-h2 { color: var(--muted); font-size: 12px; font-weight: 400; line-height: 1.6; margin: 0 0 12px; }
+h2 { color: var(--accent); font-size: 12px; font-weight: 400; line-height: 1.6; margin: 0 0 12px; }
 p { margin: 0 0 12px; }
 p:last-child { margin-bottom: 0; }
 .section-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
@@ -33,6 +34,10 @@ p:last-child { margin-bottom: 0; }
 .projects { margin: 2px 0 18px; }
 .project { display: flex; gap: 15px; padding: 20px 0; border-bottom: 1px solid var(--line); position: relative; }
 .project:first-child { padding-top: 9px; }
+.project .pitch { color: var(--green); background: var(--green-bg); }
+.project .grid { color: var(--rose); background: var(--rose-bg); }
+.project .waves { color: var(--blue); background: var(--blue-bg); }
+.project .chart { color: var(--gold); background: var(--gold-bg); }
 .project-icon { flex: 0 0 35px; height: 35px; display: grid; place-items: center; color: var(--accent); background: var(--surface); border: 1px solid var(--line); border-radius: 7px; margin-top: 2px; }
 .project-icon svg { width: 19px; height: 19px; }
 .project-copy { flex: 1; min-width: 0; }
@@ -46,11 +51,11 @@ h3 { color: var(--ink); font-size: 13px; font-weight: 550; line-height: 1.6; mar
 .text-link span { margin-left: 6px; }
 .text-link:hover, footer a:hover { color: var(--ink); }
 .tools { list-style: none; padding: 0; margin: 16px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
-.tools li { padding: 3px 10px; border: 1px solid var(--line); border-radius: 4px; font-size: 11px; color: var(--muted); }
+.tools li { padding: 3px 10px; border: 1px solid var(--line); border-radius: 5px; font-size: 11px; color: var(--accent); background: var(--surface); }
+.tools li:nth-child(4n + 2) { color: var(--green); background: var(--green-bg); }
+.tools li:nth-child(4n + 3) { color: var(--blue); background: var(--blue-bg); }
+.tools li:nth-child(4n) { color: var(--rose); background: var(--rose-bg); }
 .inline-link { text-decoration: underline; text-decoration-color: var(--muted); text-underline-offset: 4px; }
-.terminal-note { display: flex; gap: 12px; margin-top: 20px; padding: 10px 14px; background: var(--surface); border-left: 2px solid var(--accent); color: var(--muted); font-size: 11px; }
-.terminal-note > span, .terminal-cursor { color: var(--accent); }
-.terminal-note code { font-family: ui-monospace, 'Liberation Mono', monospace; }
 .github-link { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 12px; margin-top: 7px; color: var(--ink); }
 .github-link:hover { color: var(--accent); }
 .handle { color: var(--muted); font-size: 11px; }
