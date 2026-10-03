@@ -1,8 +1,11 @@
 ---
 import '../styles/index.css';
 
-const title = 'Ismail — Developer portfolio';
-const year = new Date().getFullYear();
+const messages = [
+  'Coming soon...',
+  'Adding new projects soon...',
+  'Updating the portfolio...',
+];
 ---
 
 <!doctype html>
@@ -11,57 +14,29 @@ const year = new Date().getFullYear();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#f5f3ed" />
-    <meta name="description" content="Ismail's personal corner of the web. A growing collection of code, projects, and ideas." />
-    <title>{title}</title>
+    <meta name="description" content="Ismail's portfolio. New projects coming soon." />
+    <title>Ismail — Coming soon</title>
   </head>
   <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <div class="page-shell">
-      <header class="site-header">
-        <a class="wordmark" href="#" aria-label="Ismail home">ismail<span aria-hidden="true">_</span></a>
-        <nav aria-label="Main navigation">
-          <a href="#work">Work <span aria-hidden="true">↗</span></a>
-          <a href="#about">About <span aria-hidden="true">↗</span></a>
-        </nav>
-      </header>
-
-      <main id="main">
-        <section class="hero" aria-labelledby="hero-title">
-          <div class="hero-copy">
-            <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> A personal corner of the internet</p>
-            <h1 id="hero-title">Less noise.<br />More <span class="code-word">code<span class="period">.</span></span></h1>
-            <p class="intro">Hey, I'm Ismail. This is where I share what I build,<br class="desktop-break" /> what I learn, and the ideas in between.</p>
-            <a class="work-link" href="#work">Explore my work <span aria-hidden="true">↘</span></a>
+    <main>
+      <section class="terminal" aria-label="Portfolio status">
+        <div class="terminal-bar">
+          <span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>~/ismail/portfolio</span>
+        </div>
+        <div class="terminal-body">
+          <h1 class="sr-only">Portfolio coming soon</h1>
+          <p class="sr-only">Coming soon. Adding new projects soon. Updating the portfolio.</p>
+          <div aria-hidden="true">
+            {messages.map((message, index) => (
+              <p class="terminal-line" style={`--characters: ${message.length}; --delay: ${index * 1.6}s`}>
+                <span class="prompt">❯</span><span class="typed-text">{message}</span>
+              </p>
+            ))}
+            <p class="terminal-ready"><span class="prompt">❯</span><span class="cursor"></span></p>
           </div>
-          <aside class="terminal" aria-label="Portfolio development status">
-            <div class="terminal-bar"><span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>~/ismail/portfolio</span></div>
-            <div class="terminal-body">
-              <p><span class="prompt" aria-hidden="true">❯</span> cat hello.txt</p>
-              <p class="terminal-output">Hello, world.<br />Good things start with<br />a little curiosity.</p>
-              <p class="terminal-command"><span class="prompt" aria-hidden="true">❯</span> git status</p>
-              <p class="terminal-output"><span class="terminal-green">On branch main</span><br />Something new is in the works.</p>
-              <p class="terminal-last" aria-hidden="true"><span class="prompt">❯</span> <span class="cursor"></span></p>
-            </div>
-          </aside>
-          <div class="hero-bottom"><span>Code. Learn. Iterate.</span><span>Scroll to explore <span aria-hidden="true">↓</span></span></div>
-        </section>
-
-        <section class="work-section" id="work" aria-labelledby="work-title">
-          <div class="section-heading"><h2 id="work-title"><span class="section-number">01 /</span> Selected work</h2><span class="small-label">A collection in progress</span></div>
-          <div class="empty-project">
-            <span class="project-icon" aria-hidden="true">&lt;/&gt;</span>
-            <div><h3>A little room for what's next.</h3><p>Projects are on the way. This space will grow with the things I build.</p></div>
-            <span class="project-status"><span class="status-dot" aria-hidden="true"></span> Coming soon</span>
-          </div>
-        </section>
-
-        <section class="about-section" id="about" aria-labelledby="about-title">
-          <h2 id="about-title"><span class="section-number">02 /</span> Behind the code</h2>
-          <div class="about-copy"><p>A space for work, experiments,<br />and figuring things out.</p><p class="about-detail">I'm building this portfolio one piece at a time. Along the way, I'll be sharing projects, small discoveries, and whatever comes next.</p><span class="small-label">Always a work in progress <span class="orange" aria-hidden="true">↗</span></span></div>
-        </section>
-      </main>
-
-      <footer><span>© {year} Ismail</span><span>Built with Astro <span class="footer-star" aria-hidden="true">✳</span></span><a href="#">Back to top <span aria-hidden="true">↑</span></a></footer>
-    </div>
+        </div>
+      </section>
+    </main>
   </body>
 </html>
