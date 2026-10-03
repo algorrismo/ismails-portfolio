@@ -21,8 +21,8 @@ const messages = [
     <main>
       <section class="terminal" aria-label="Portfolio status">
         <div class="terminal-bar">
-          <span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-          <span>~/ismail/portfolio</span>
+          <span class="terminal-title">ismail@linux: ~/portfolio</span>
+          <span class="terminal-shell" aria-hidden="true">bash</span>
         </div>
         <div class="terminal-body">
           <h1 class="sr-only">Portfolio coming soon</h1>
@@ -30,10 +30,10 @@ const messages = [
           <div aria-hidden="true">
             {messages.map((message, index) => (
               <p class="terminal-line" style={`--characters: ${message.length}; --delay: ${index * 1.6}s`}>
-                <span class="prompt">❯</span><span class="typed-text">{message}</span>
+                <span class="prompt">$</span><span class="typed-text">{message}</span>
               </p>
             ))}
-            <p class="terminal-ready"><span class="prompt">❯</span><span class="cursor"></span></p>
+            <p class="terminal-ready"><span class="prompt">$</span><span class="cursor"></span></p>
           </div>
         </div>
       </section>
