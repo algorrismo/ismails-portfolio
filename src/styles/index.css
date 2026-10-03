@@ -1,15 +1,56 @@
-:root { font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #44404d; background: #fcfaf8; --background: #fcfaf8; --ink: #30273e; --muted: #756b7e; --line: #e8e0ed; --surface: #f1ebf7; --accent: #8053a1; --rose: #aa536d; --green: #3c7962; --blue: #466fa4; --gold: #916829; --rose-bg: #f9e9ee; --green-bg: #e7f2eb; --blue-bg: #e9effb; --gold-bg: #f7eedc; color-scheme: light; font-synthesis: none; }
-:root[data-theme='dark'] { color: #d9d1e1; background: #1b1922; --background: #1b1922; --ink: #f2eaf8; --muted: #b3a5c0; --line: #393044; --surface: #2c2338; --accent: #c2a1e5; --rose: #eca7bb; --green: #9bccb4; --blue: #a6c1f0; --gold: #e4c48c; --rose-bg: #35232e; --green-bg: #20342c; --blue-bg: #242d42; --gold-bg: #373023; color-scheme: dark; }
+:root {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #454440;
+  background: var(--background);
+  --background: #f3f2ef;
+  --ink: #292a28;
+  --muted: #6d6d67;
+  --line: #ddddd6;
+  --surface: #eae9e4;
+  --accent: #705884;
+  --rose: #96566a;
+  --green: #42745d;
+  --blue: #4d6d95;
+  --gold: #88672f;
+  --rose-bg: #eee3e5;
+  --green-bg: #e1e9e1;
+  --blue-bg: #e2e7ee;
+  --gold-bg: #ede7d9;
+  --selection: #ddd2e5;
+  --logo-background: #eeede9;
+  color-scheme: light;
+  font-synthesis: none;
+}
+:root[data-theme='dark'] {
+  color: #c5c5bf;
+  --background: #1e201f;
+  --ink: #e5e5df;
+  --muted: #a3a59e;
+  --line: #393c38;
+  --surface: #282b28;
+  --accent: #bba6ce;
+  --rose: #d39aaa;
+  --green: #98bda4;
+  --blue: #9eb5d2;
+  --gold: #cfb780;
+  --rose-bg: #342a2d;
+  --green-bg: #28342d;
+  --blue-bg: #29313b;
+  --gold-bg: #343126;
+  --selection: #4d405b;
+  --logo-background: #d4d5ce;
+  color-scheme: dark;
+}
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 32px; }
-body { background: radial-gradient(ellipse 650px 450px at 20% 0%, color-mix(in srgb, var(--surface) 85%, transparent), transparent), radial-gradient(ellipse 550px 420px at 90% 20%, color-mix(in srgb, var(--rose-bg) 65%, transparent), transparent); margin: 0; font-size: 14px; line-height: 1.85; -webkit-font-smoothing: antialiased; }
+body { background: radial-gradient(ellipse 650px 450px at 20% 0%, color-mix(in srgb, var(--surface) 40%, transparent), transparent), radial-gradient(ellipse 550px 420px at 90% 20%, color-mix(in srgb, var(--rose-bg) 20%, transparent), transparent); margin: 0; font-size: 14px; line-height: 1.85; -webkit-font-smoothing: antialiased; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; cursor: pointer; }
 button[hidden] { display: none; }
 button, a { -webkit-tap-highlight-color: transparent; }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; border-radius: 3px; }
 section:focus { outline: none; }
-::selection { background: #e5d4f2; color: #30273e; }
+::selection { background: var(--selection); color: var(--ink); }
 .page { width: min(100%, 560px); padding: 0 28px; margin: 0 auto; }
 header { display: flex; align-items: center; justify-content: space-between; padding: 48px 0 43px; }
 .identity { display: flex; gap: 11px; align-items: center; font-size: 12px; font-weight: 500; color: var(--ink); }
@@ -60,7 +101,7 @@ h3 { color: var(--ink); font-size: 13px; font-weight: 550; line-height: 1.6; mar
 .tools li { min-width: 0; animation: float-tool var(--float-duration) ease-in-out var(--float-delay) infinite; }
 .tool-tile { min-height: 83px; padding: 12px 3px 9px; display: flex; flex-direction: column; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 12px; background: var(--background); box-shadow: 0 5px 12px #30273e08; color: var(--ink); font-size: 9px; line-height: 1.5; text-align: center; transition: box-shadow .2s, border-color .2s; }
 .tool-tile:hover { border-color: var(--accent); box-shadow: 0 6px 16px #8053a11a; }
-.tool-logo { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 8px; background: #fff; }
+.tool-logo { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 8px; background: var(--logo-background); }
 .tool-logo img { object-fit: contain; }
 .toolbox-cloud:hover li, .toolbox-cloud.is-paused li { animation-play-state: paused; }
 @keyframes float-tool { 0%, 100% { transform: translateY(3px) rotate(-1deg); } 50% { transform: translateY(-4px) rotate(1deg); } }

@@ -14,7 +14,7 @@ const icons: Record<string, string> = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#fcfaf8" />
+    <meta name="theme-color" content="#f3f2ef" />
     <meta name="description" content="Ismail Hossain's personal portfolio. Web interfaces, software projects, and experiments in code." />
     <meta property="og:title" content="Ismail Hossain — Developer" />
     <meta property="og:description" content="Building things. Learning along the way. Explore my projects and personal corner of the web." />
@@ -118,7 +118,7 @@ const icons: Record<string, string> = {
       function syncTheme(dark: boolean) {
         document.documentElement.dataset.theme = dark ? 'dark' : 'light';
         themeButton.setAttribute('aria-label', `Switch to ${dark ? 'light' : 'dark'} theme`);
-        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#1b1922' : '#fcfaf8');
+        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#1e201f' : '#f3f2ef');
       }
       syncTheme(document.documentElement.dataset.theme === 'dark' || (!document.documentElement.dataset.theme && themeMedia.matches));
       themeButton.hidden = false;
