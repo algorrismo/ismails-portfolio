@@ -5,7 +5,7 @@ interface Props { title?: string; }
 const { title = 'Ismail Hossain — Developer' } = Astro.props;
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" class="bg-background font-sans text-ink">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -25,9 +25,9 @@ const { title = 'Ismail Hossain — Developer' } = Astro.props;
       } catch {}
     </script>
   </head>
-  <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <div class="page">
+  <body class="text-base leading-normal antialiased">
+    <a class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-4 focus:z-2 focus:bg-background focus:px-3.5 focus:py-2" href="#main">Skip to content</a>
+    <div class="mx-auto w-full max-w-lg px-4 pt-8 pb-32 sm:pt-12 sm:pb-24">
       <Header />
       <main id="main"><slot /></main>
     </div>

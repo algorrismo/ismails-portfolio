@@ -1,0 +1,83 @@
+---
+// Kept for future use; import this component to show projects and the toolbox.
+import { ChartColumn, CircleDot, LayoutGrid, WavesHorizontal } from '@lucide/astro';
+import { profile, projects, tools } from '../data/portfolio';
+
+const projectIcons: Record<string, typeof CircleDot> = {
+  pitch: CircleDot,
+  grid: LayoutGrid,
+  waves: WavesHorizontal,
+  chart: ChartColumn,
+};
+---
+<div aria-label="Explore my work">
+  <details name="explore" id="work">
+    <summary>Projects <span aria-hidden="true">+</span></summary>
+    <section aria-labelledby="work-title" class="mb-12">
+      <div class="flex items-baseline justify-between gap-3">
+        <h2 id="work-title" class="mb-2 text-base leading-normal font-normal text-muted">Selected work</h2>
+        <span class="text-[10px] text-muted">A few things I've built</span>
+      </div>
+      <div class="mt-0.5 mb-[18px]">
+        {projects.map(project => {
+          const ProjectIcon = projectIcons[project.icon] ?? CircleDot;
+          return (
+            <a
+              class="group relative flex gap-[15px] border-b border-line py-5 first:pt-[9px]"
+              href={`${profile.github}/${project.repository}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="mt-0.5 grid size-[35px] shrink-0 place-items-center rounded-[7px] border border-line bg-surface">
+                <ProjectIcon size={19} stroke-width={1.7} />
+              </span>
+              <div class="min-w-0 flex-1">
+                <h3 class="mb-1 text-[13px] leading-[1.6] font-[550] text-ink">
+                  {project.name}<span class="sr-only"> (opens in a new tab)</span>
+                </h3>
+                <p class="mb-1.5 text-xs leading-[1.75] text-muted">{project.description}</p>
+                <div class="mt-[9px] flex flex-wrap gap-x-3 gap-y-1.5 font-mono text-[9px] text-muted">
+                  {project.stack.map(tech => (
+                    <span class="inline-flex items-center gap-[5px]">
+                      <img class="object-contain" src={`/icons/${tech.icon}.svg`} alt="" width="14" height="14" loading="lazy" />
+                      {tech.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <span class="text-[15px] text-muted transition-transform duration-180 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none" aria-hidden="true">↗</span>
+            </a>
+          );
+        })}
+      </div>
+      <a class="text-xs text-muted hover:text-ink" href={`${profile.github}?tab=repositories`} target="_blank" rel="noopener noreferrer">
+        More on GitHub <span class="ml-1.5" aria-hidden="true">↗</span>
+      </a>
+    </section>
+  </details>
+
+  <details name="explore" id="toolbox">
+    <summary>Everyday stack <span aria-hidden="true">+</span></summary>
+    <section aria-labelledby="tools-title" class="mb-12">
+      <h2 id="tools-title" class="mb-2 text-base leading-normal font-normal text-muted">Tools & technologies</h2>
+      <p>The languages, frameworks, and tools in my orbit.</p>
+      <div class="group mt-5 rounded-[18px] border border-line bg-surface px-[18px] py-[25px] max-[480px]:px-3 max-[480px]:py-[22px]">
+        <ul class="grid grid-cols-5 gap-x-2.5 gap-y-[18px] max-[480px]:grid-cols-4 max-[480px]:gap-x-2 max-[480px]:gap-y-[15px] max-[350px]:grid-cols-3">
+          {tools.map((tool, index) => (
+            <li
+              class="min-w-0 animate-[float-tool_var(--float-duration)_ease-in-out_var(--float-delay)_infinite] group-hover:[animation-play-state:paused] motion-reduce:animate-none"
+              style={`--float-delay: -${index * 0.47}s; --float-duration: ${4 + (index % 4) * 0.6}s`}
+            >
+              <div class="flex min-h-[83px] flex-col items-center gap-2 rounded-xl border border-line bg-background px-[3px] pt-3 pb-[9px] text-center text-[9px] leading-normal text-ink shadow-[0_5px_12px_#30273e08] transition-[box-shadow,border-color] duration-200 hover:shadow-[0_6px_16px_#8053a11a]">
+                <span class="grid size-[38px] place-items-center rounded-lg">
+                  <img class="object-contain" src={`/icons/${tool.icon}.svg`} alt="" width="30" height="30" loading="lazy" />
+                </span>
+                <span>{tool.name}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  </details>
+</div>

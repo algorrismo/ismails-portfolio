@@ -11,6 +11,26 @@ npm run dev
 
 Edit `src/pages/index.astro` to customize the homepage.
 
+Run `npm run check` to check Astro templates and TypeScript before building.
+
+## Components and icons
+
+Import interface icons directly from `@lucide/astro`:
+
+```astro
+---
+import { Sun, Folder } from '@lucide/astro';
+---
+<Sun size={18} stroke-width={1.5} />
+<Folder size={20} class="text-muted" />
+```
+
+The GitHub logo is available as `src/components/icons/GitHubIcon.astro`.
+`HeaderDropdown.astro` shares the header dropdown markup, and
+`src/scripts/header.ts` handles keyboard navigation and theme selection.
+The optional project and toolbox sections are preserved in `SavedWork.astro`;
+import and render it when those sections are ready to appear on the homepage.
+
 ## Production build
 
 ```sh

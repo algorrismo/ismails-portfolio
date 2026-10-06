@@ -1,0 +1,39 @@
+---
+interface Props {
+  name: 'appearance' | 'navigation';
+  label: string;
+  title: string;
+  toggleId: string;
+  panelClass: string;
+}
+
+const { name, label, title, toggleId, panelClass } = Astro.props;
+const panelId = `${name}-panel`;
+---
+<div class="relative" data-dropdown={name}>
+  <button
+    type="button"
+    id={toggleId}
+    class="group grid size-8 place-items-center rounded-lg bg-transparent p-[7px] text-muted transition-colors duration-[140ms] hover:bg-surface hover:text-ink aria-expanded:bg-surface aria-expanded:text-ink motion-reduce:transition-none"
+    data-dropdown-toggle
+    data-dropdown-label={label}
+    aria-label={`Open ${label}`}
+    aria-controls={panelId}
+    aria-expanded="false"
+    title={title}
+    hidden
+  >
+    <slot name="icon" />
+  </button>
+  <div
+    id={panelId}
+    class:list={[
+      'absolute top-[calc(100%+8px)] right-0 z-10 animate-reveal-menu rounded-[10px] border border-line bg-background p-1 shadow-[0_8px_24px_#0000000d,0_2px_5px_#00000005] motion-reduce:animate-none',
+      panelClass,
+    ]}
+    data-dropdown-panel
+    hidden
+  >
+    <slot />
+  </div>
+</div>
