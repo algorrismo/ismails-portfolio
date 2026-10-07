@@ -1,16 +1,14 @@
 ---
 import Page from '../layouts/Page.astro';
 import GitHubIcon from '../components/icons/GitHubIcon.astro';
-import { ArrowUpRight } from '@lucide/astro';
 import { profile } from '../data/portfolio';
 ---
 <Page>
   <div class="page-intro">
-    <p class="eyebrow">A personal corner of the web</p>
     <h1 class="page-title">{profile.tagline}</h1>
   </div>
   <section class="text-section" id="intro" aria-labelledby="intro-title">
-    <h2 id="intro-title" class="section-title">A little about me</h2>
+    <h2 id="intro-title" class="section-title">Intro</h2>
     <p>{profile.intro}</p>
   </section>
   <section class="text-section" aria-labelledby="approach-title">
@@ -23,11 +21,9 @@ import { profile } from '../data/portfolio';
   </section>
   <!-- Optional project and toolbox sections live in components/SavedWork.astro. -->
   <section class="connect-section" id="connect" aria-labelledby="connect-title">
-    <h2 id="connect-title" class="section-title">Elsewhere</h2>
-    <a class="text-link" aria-label="Ismail on GitHub (opens in a new tab)" href={profile.github} target="_blank" rel="noopener noreferrer">
-      <GitHubIcon class="size-4" />
-      <span>Find me on GitHub</span>
-      <ArrowUpRight size={16} aria-hidden="true" />
+    <h2 id="connect-title" class="sr-only">Elsewhere</h2>
+    <a class="social-link" aria-label="Ismail on GitHub (opens in a new tab)" title="GitHub" href={profile.github} target="_blank" rel="noopener noreferrer">
+      <GitHubIcon class="size-5" />
     </a>
   </section>
 </Page>
