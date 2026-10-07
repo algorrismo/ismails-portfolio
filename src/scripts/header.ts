@@ -20,17 +20,20 @@ groups.forEach(group => {
     if (!group.root.contains(event.relatedTarget as Node)) setOpen(group, false);
   });
   group.root.addEventListener('keydown', event => {
-    if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
+    const key = group.root.dataset.placement === 'left'
+      ? ({ ArrowRight: 'ArrowDown', ArrowLeft: 'ArrowUp' }[event.key] ?? event.key)
+      : event.key;
+    if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(key)) return;
     event.preventDefault();
     const items = Array.from(group.panel.querySelectorAll<HTMLElement>('a, button'));
     if (group.panel.hidden) {
       openGroup(group);
-      (event.key === 'ArrowUp' || event.key === 'End' ? items.at(-1) : items[0])?.focus();
+      (key === 'ArrowUp' || key === 'End' ? items.at(-1) : items[0])?.focus();
       return;
     }
     const index = items.indexOf(document.activeElement as HTMLElement);
-    const next = event.key === 'Home' ? 0 : event.key === 'End' ? items.length - 1 :
-      event.key === 'ArrowDown' ? (index + 1) % items.length : (index <= 0 ? items.length - 1 : index - 1);
+    const next = key === 'Home' ? 0 : key === 'End' ? items.length - 1 :
+      key === 'ArrowDown' ? (index + 1) % items.length : (index <= 0 ? items.length - 1 : index - 1);
     items[next]?.focus();
   });
 });
@@ -42,7 +45,7 @@ document.addEventListener('keydown', event => {
   const open = groups.find(group => !group.panel.hidden);
   if (open) { event.preventDefault(); setOpen(open, false, true); }
 });
-const choices = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-theme-choice]'));
+const themeToggles = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]'));
 const themeIcons = Array.from(document.querySelectorAll<HTMLElement>('[data-theme-icon]'));
 const media = matchMedia('(prefers-color-scheme: dark)');
 let preference = 'system';
@@ -52,18 +55,28 @@ try {
 } catch {}
 function syncTheme() {
   const dark = preference === 'dark' || (preference === 'system' && media.matches);
-  document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+  const activeTheme = dark ? 'dark' : 'light';
+  document.documentElement.dataset.theme = activeTheme;
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#111111' : '#fcfcfc');
-  choices.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.themeChoice === preference)));
-  themeIcons.forEach(icon => icon.hidden = icon.dataset.themeIcon !== preference);
-  document.querySelector('#appearance-toggle')?.setAttribute('title', `Appearance: ${preference}`);
+  themeIcons.forEach(icon => icon.hidden = icon.dataset.themeIcon !== activeTheme);
+  themeToggles.forEach(button => {
+    const label = `Switch to ${dark ? 'light' : 'dark'} mode`;
+    button.setAttribute('aria-label', label);
+    button.hidden = false;
+  });
 }
 syncTheme();
 media.addEventListener('change', syncTheme);
-choices.forEach(button => button.addEventListener('click', () => {
-  preference = button.dataset.themeChoice!;
+function toggleTheme() {
+  preference = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
   try { localStorage.setItem('portfolio-theme', preference); } catch {}
   syncTheme();
-  const appearance = groups.find(group => group.root.dataset.dropdown === 'appearance')!;
-  setOpen(appearance, false, true);
-}));
+}
+themeToggles.forEach(button => button.addEventListener('click', toggleTheme));
+document.addEventListener('keydown', event => {
+  if (event.defaultPrevented || event.repeat || event.isComposing || event.ctrlKey || event.metaKey || event.altKey || event.key.toLowerCase() !== 't') return;
+  const target = event.target;
+  if (target instanceof HTMLElement && (target.isContentEditable || target.closest('input, textarea, select, [role="textbox"]'))) return;
+  event.preventDefault();
+  toggleTheme();
+});

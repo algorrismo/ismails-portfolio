@@ -1,0 +1,80 @@
+---
+import { Moon, Sun } from '@lucide/astro';
+---
+<button
+  type="button"
+  id="appearance-toggle"
+  data-theme-toggle
+  class="theme-toggle relative grid size-11 place-items-center rounded-full bg-transparent text-muted transition-colors duration-150 hover:bg-surface hover:text-ink motion-reduce:transition-none"
+  aria-label="Switch to dark mode"
+  aria-keyshortcuts="T"
+  hidden
+>
+  <span data-theme-icon="light"><Sun size={16} stroke-width={1.25} /></span>
+  <span data-theme-icon="dark" hidden><Moon size={16} stroke-width={1.25} /></span>
+  <span class="theme-tooltip" aria-hidden="true">
+    <span class="theme-tooltip-label">Toggle</span>
+    <kbd>T</kbd>
+  </span>
+</button>
+
+<style>
+  .theme-tooltip {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 9px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: var(--background);
+    color: var(--ink);
+    box-shadow: 0 3px 10px rgb(0 0 0 / 5%);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, 4px);
+    transition: opacity 150ms ease, transform 150ms ease, visibility 150ms;
+  }
+
+  .theme-tooltip-label {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-style: normal;
+    line-height: 1.4;
+  }
+
+  .theme-tooltip kbd {
+    padding: 1px 4px;
+    border: 1px solid var(--line);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    background: var(--surface);
+    color: var(--muted);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    line-height: 14px;
+  }
+
+  .theme-toggle:focus-visible .theme-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+  }
+
+  @media (hover: hover) {
+    .theme-toggle:hover .theme-tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .theme-tooltip { transition: none; }
+  }
+</style>

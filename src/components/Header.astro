@@ -1,9 +1,10 @@
 ---
 import {
-  ArrowUpRight, BookOpen, Check, Coffee, FlaskConical, Folder,
-  Layers, LayoutGrid, Monitor, Moon, Sun, X,
+  ArrowUpRight, BookOpen, Coffee, FlaskConical, Folder,
+  Layers, LayoutGrid, X,
 } from '@lucide/astro';
 import HeaderDropdown from './HeaderDropdown.astro';
+import ThemeToggle from './ThemeToggle.astro';
 import { profile } from '../data/portfolio';
 import { destinations } from '../data/navigation';
 
@@ -15,11 +16,6 @@ const navigationIcons: Record<string, typeof Folder> = {
   uses: Coffee,
   experiments: FlaskConical,
 };
-const themes = [
-  { value: 'light', label: 'Light', Icon: Sun },
-  { value: 'dark', label: 'Dark', Icon: Moon },
-  { value: 'system', label: 'System', Icon: Monitor },
-];
 const rowClass = 'group flex min-h-11 w-full items-center gap-3 rounded-md bg-transparent px-3 py-2 text-left text-sm leading-5 text-ink hover:bg-surface aria-[current=page]:bg-surface focus-visible:-outline-offset-2';
 ---
 <header class="site-header">
@@ -28,30 +24,7 @@ const rowClass = 'group flex min-h-11 w-full items-center gap-3 rounded-md bg-tr
   </a>
 
   <div class="flex items-center gap-1.5">
-    <HeaderDropdown
-      name="appearance"
-      label="appearance settings"
-      title="Appearance"
-      toggleId="appearance-toggle"
-      panelClass="w-44"
-    >
-      <Fragment slot="icon">
-        {themes.map(({ value, Icon }) => (
-          <span data-theme-icon={value} hidden={value !== 'system'}>
-            <Icon size={18} stroke-width={1.5} />
-          </span>
-        ))}
-      </Fragment>
-      <div role="group" aria-label="Appearance">
-        {themes.map(({ value, label, Icon }) => (
-          <button type="button" class={rowClass} data-theme-choice={value} aria-pressed="false">
-            <Icon size={15} stroke-width={1.5} class="shrink-0 text-muted" />
-            <span>{label}</span>
-            <Check size={13} stroke-width={1.7} class="invisible ml-auto text-ink group-aria-pressed:visible" />
-          </button>
-        ))}
-      </div>
-    </HeaderDropdown>
+    {currentPath !== '' && <ThemeToggle />}
 
     <HeaderDropdown
       name="navigation"
@@ -61,20 +34,20 @@ const rowClass = 'group flex min-h-11 w-full items-center gap-3 rounded-md bg-tr
       panelClass="w-48 max-w-[calc(100vw-32px)]"
     >
       <Fragment slot="icon">
-        <LayoutGrid size={18} stroke-width={1.5} class="group-aria-expanded:hidden" />
-        <X size={18} stroke-width={1.5} class="hidden group-aria-expanded:block" />
+        <LayoutGrid size={16} stroke-width={1.5} class="group-aria-expanded:hidden" />
+        <X size={16} stroke-width={1.5} class="hidden group-aria-expanded:block" />
       </Fragment>
       <nav class="grid gap-px" aria-label="Main navigation">
         {destinations.map(({ slug, title }) => {
           const Icon = navigationIcons[slug] ?? Folder;
           return (
             <a class={rowClass} href={`/${slug}/`} aria-current={currentPath === `/${slug}` ? 'page' : undefined}>
-              <Icon size={18} stroke-width={1.5} class="shrink-0 text-muted" />
+              <Icon size={16} stroke-width={1.5} class="shrink-0 text-muted" />
               <span>{title}</span>
               <ArrowUpRight
                 size={13}
                 stroke-width={1.7}
-                class="ml-auto -translate-x-0.5 translate-y-0.5 text-muted opacity-0 transition-[opacity,translate] duration-[140ms] group-hover:translate-0 group-hover:opacity-100 group-focus-visible:translate-0 group-focus-visible:opacity-100 group-aria-[current=page]:translate-0 group-aria-[current=page]:opacity-100 motion-reduce:transition-none"
+                class="ml-auto -translate-x-0.5 translate-y-0.5 text-muted opacity-0 transition-[opacity,translate] duration-140 group-hover:translate-0 group-hover:opacity-100 group-focus-visible:translate-0 group-focus-visible:opacity-100 group-aria-[current=page]:translate-0 group-aria-[current=page]:opacity-100 motion-reduce:transition-none"
               />
             </a>
           );

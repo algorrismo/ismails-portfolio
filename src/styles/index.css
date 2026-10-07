@@ -14,6 +14,11 @@
 }
 
 @theme {
+  --animate-reveal-theme: reveal-theme 180ms ease-out;
+  @keyframes reveal-theme {
+    from { opacity: 0; transform: translateX(8px) scale(0.94); }
+    to { opacity: 1; transform: translateX(0) scale(1); }
+  }
   --animate-reveal-menu: reveal-menu 120ms ease-out;
   @keyframes reveal-menu {
     from { opacity: 0; transform: translateY(-4px); }
@@ -62,7 +67,7 @@
   .text-section { margin-top: 48px; }
   .section-title { margin-bottom: 8px; font-size: 16px; font-weight: 400; line-height: 1.5; color: var(--muted); }
   .text-section > p { color: var(--ink); text-wrap: pretty; }
-  .connect-section { margin-top: 36px; }
+  .connect-section { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 36px; }
   .social-link { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-left: -12px; border-radius: 6px; }
   .social-link:hover { color: var(--muted); }
   .text-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 14px; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 5px; transition: text-decoration-color 140ms; }
