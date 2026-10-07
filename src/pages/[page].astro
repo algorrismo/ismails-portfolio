@@ -3,7 +3,7 @@ import Page from '../layouts/Page.astro';
 import { CornerUpLeft } from '@lucide/astro';
 import { destinations } from '../data/navigation';
 export function getStaticPaths() {
-  return destinations.map(destination => ({ params: { page: destination.slug }, props: { title: destination.title } }));
+  return destinations.filter(destination => destination.slug !== 'experiments').map(destination => ({ params: { page: destination.slug }, props: { title: destination.title } }));
 }
 const { title } = Astro.props;
 ---

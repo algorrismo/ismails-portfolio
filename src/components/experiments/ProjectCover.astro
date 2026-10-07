@@ -1,0 +1,36 @@
+---
+interface Props { index: number; }
+const { index } = Astro.props;
+---
+<div class:list={['project-cover', `cover-${index}`]} aria-hidden="true">
+  {index === 0 && <>
+    <div class="pitch-glow"></div>
+    <div class="football-app">
+      <div class="app-topline"><span>✳ FANTASY XI</span><span>STUDIO</span></div>
+      <div class="team-heading">Your team.<br /><em>Your game.</em></div>
+      <div class="squad-meta"><span>MY SQUAD</span><span>11 / 11</span></div>
+      <div class="football-pitch">
+        <div class="pitch-circle"></div><div class="pitch-box"></div>
+        {[0, 1, 2, 3].map(row => <div class="player-row">{Array.from({length: row === 0 ? 1 : row === 1 ? 4 : 3}, (_, i) => <span class="player"><i style={`--jersey:${(i + row) % 2 ? '#eee8ce' : '#d4f278'}`}></i><small>{['GK', 'DEF', 'MID', 'FWD'][row]}</small></span>)}</div>)}
+      </div>
+      <div class="squad-bottom"><span>Budget remaining</span><b>24.5</b></div>
+    </div>
+    <span class="cover-caption">A little strategy.<br />A whole lot of football.</span>
+  </>}
+  {index === 1 && <>
+    <div class="market-window">
+      <div class="window-bar"><span>● ● ●</span><span>CattleCart</span></div>
+      <div class="market-body"><div class="market-sidebar">C<span>⌂</span><span>▦</span><span>↗</span></div>
+        <div class="market-content"><div class="market-greeting">A better way<br />to market.</div><div class="market-stats"><div><small>Marketplace</small><b>Overview</b></div><div><small>Everything</small><b>In one place</b></div></div><div class="market-graph">{[30, 50, 40, 75, 58, 87, 70, 100].map(h=><i style={`height:${h}%`}></i>)}</div><div class="market-line"></div><div class="market-line short"></div></div>
+      </div>
+    </div><span class="cover-wordmark">CattleCart<span>MADE TO CONNECT.</span></span>
+  </>}
+  {index === 2 && <>
+    <div class="sea-sun"></div><div class="sea-horizon"></div><div class="sea-wave wave-one"></div><div class="sea-wave wave-two"></div><div class="sea-wave wave-three"></div>
+    <div class="sailboat"><span class="sail"></span><span class="sail small-sail"></span><span class="hull"></span></div>
+    <div class="sea-title">Maritime<br /><em>World Journey</em><span>AN OPENGL EXPLORATION</span></div>
+  </>}
+  {index === 3 && <>
+    <div class="expense-sheet"><div class="receipt-edge"></div><span class="receipt-heading">a little clarity.</span><span class="receipt-subtitle">PERSONAL EXPENSE TRACKER</span><div class="receipt-rule"></div><div class="receipt-total"><span>Your everyday,<br />in perspective.</span><b>↗</b></div><div class="receipt-chart">{[32, 60, 47, 80, 58, 90, 72].map(h=><i style={`height:${h}%`}></i>)}</div><div class="receipt-rule"></div><span class="receipt-footer">LESS GUESSWORK. MORE LIVING.</span></div>
+  </>}
+</div>

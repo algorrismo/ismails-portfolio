@@ -55,7 +55,15 @@ document.addEventListener('keydown', event => {
 });
 const themeToggles = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]'));
 const themeIcons = Array.from(document.querySelectorAll<HTMLElement>('[data-theme-icon]'));
+const themeChoices = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-theme-choice]'));
 const media = matchMedia('(prefers-color-scheme: dark)');
+let hasThemePreference = false;
+try {
+  const savedTheme = localStorage.getItem('theme');
+  hasThemePreference = savedTheme === 'light' || savedTheme === 'dark';
+} catch {
+  // The toggle still works when browser storage is unavailable.
+}
 function syncTheme(dark = media.matches) {
   const activeTheme = dark ? 'dark' : 'light';
   document.documentElement.dataset.theme = activeTheme;
@@ -66,12 +74,25 @@ function syncTheme(dark = media.matches) {
     button.setAttribute('aria-label', label);
     button.hidden = false;
   });
+  themeChoices.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.themeChoice === activeTheme)));
 }
-syncTheme();
-media.addEventListener('change', () => syncTheme());
+syncTheme(document.documentElement.dataset.theme === 'dark');
+media.addEventListener('change', () => {
+  if (!hasThemePreference) syncTheme();
+});
+function chooseTheme(dark: boolean) {
+  syncTheme(dark);
+  hasThemePreference = true;
+  try {
+    localStorage.setItem('theme', document.documentElement.dataset.theme!);
+  } catch {
+    // Keep the selected theme for this page even if it cannot be saved.
+  }
+}
 function toggleTheme() {
-  syncTheme(document.documentElement.dataset.theme !== 'dark');
+  chooseTheme(document.documentElement.dataset.theme !== 'dark');
 }
+themeChoices.forEach(button => button.addEventListener('click', () => chooseTheme(button.dataset.themeChoice === 'dark')));
 themeToggles.forEach(button => button.addEventListener('click', toggleTheme));
 document.addEventListener('keydown', event => {
   if (event.defaultPrevented || event.repeat || event.isComposing || event.ctrlKey || event.metaKey || event.altKey || event.key.toLowerCase() !== 't') return;

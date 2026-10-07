@@ -1,0 +1,76 @@
+---
+import Page from '../layouts/Page.astro';
+import { ArrowLeft, ArrowUpRight, Sun, Moon, Scissors, CodeXml, Layers, Sparkles } from '@lucide/astro';
+import ProjectCover from '../components/experiments/ProjectCover.astro';
+import { profile, projects, tools } from '../data/portfolio';
+import { gardenNotes, resourceLinks, experimentSections } from '../data/experiments';
+import '../styles/experiments.css';
+---
+<Page title={`Experiments — ${profile.name}`} experimental>
+  <div class="experiment" data-experiment>
+    <nav class="experiment-chrome" aria-label="Portfolio navigation">
+      <a class="return-to-portfolio" href="/" aria-label="Back to main portfolio"><ArrowLeft size={14} /><span>Portfolio</span></a>
+      <div class="appearance-switch" role="group" aria-label="Appearance">
+        <button type="button" data-theme-choice="light" aria-label="Light mode" aria-pressed="false"><Sun size={14} /></button>
+        <button type="button" data-theme-choice="dark" aria-label="Dark mode" aria-pressed="false"><Moon size={14} /></button>
+      </div>
+    </nav>
+    <div class="experiment-home" data-experiment-home>
+      <header class="experiment-intro">
+        <a class="experiment-avatar" href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="Ismail on GitHub"><img src="/avatar.jpg" alt="Ismail Hossain" width="40" height="40" /></a>
+        <h1 tabindex="-1">Hey there, I’m Ismail<span>a developer, learning by making things</span></h1>
+        <div class="experiment-bio">
+          <p>I build <a href="#work" class="highlight highlight-blue">web interfaces</a> and explore software development. On the side, I’m experimenting with <a href="#garden" class="highlight highlight-peach">new ideas.</a></p>
+          <p>From React applications to desktop software and small experiments with code. I care about clear interfaces, thoughtful details, and <a href="#work" class="highlight highlight-pink">making things useful.</a></p>
+        </div>
+        <button class="bio-divider" type="button" aria-label="Reveal more about me" aria-expanded="false" aria-controls="extra-bio" data-bio-toggle><span></span><Scissors size={22} /></button>
+        <div id="extra-bio" class="extra-bio" hidden><p>{profile.intro}</p><a href={profile.github} target="_blank" rel="noopener noreferrer">Follow what I’m building <ArrowUpRight size={14} /></a></div>
+      </header>
+      <nav class="experiment-grid" aria-label="Explore my portfolio">
+        <a class="experiment-card work-card" href="#work" aria-label="Selected work" aria-keyshortcuts="W">
+          <div class="work-slides" aria-hidden="true">{projects.map((project, index) => <div class:list={['work-slide', { 'is-active': index === 0 }]} data-work-slide><ProjectCover index={index} /><span class="project-chip">{project.name}</span></div>)}</div>
+          <span class="card-hover-label">Selected work [W]</span><kbd>W</kbd>
+        </a>
+        <a class="experiment-card garden-card" href="#garden" aria-label="Digital garden" aria-keyshortcuts="G">
+          <span class="card-eyebrow">Digital garden</span>
+          <div class="note-stack" aria-hidden="true">{gardenNotes.toReversed().map((note, index) => <div class:list={['note-paper', note.color]} style={`--paper:${index}`}><strong>{note.title}</strong><p>{note.summary}</p><span class="note-tag">{note.category}</span><span class="note-number">0{3-index}</span></div>)}</div>
+          <span class="card-hover-label">Garden [G]</span><kbd>G</kbd>
+        </a>
+        <a class="experiment-card services-card" href="#services" aria-label="Work with me" aria-keyshortcuts="S">
+          <span class="card-eyebrow">Work with me</span><div class="service-preview" aria-hidden="true"><span>Web interfaces</span><span>Thoughtful interactions</span><span>Creative experiments</span></div>
+          <span class="card-hover-label">Work with me [S]</span><kbd>S</kbd>
+        </a>
+        <a class="experiment-card resources-card" href="#resources" aria-label="Resources" aria-keyshortcuts="R">
+          <span class="card-eyebrow">Resources</span><div class="book-shelf" aria-hidden="true">{resourceLinks.map((resource,index) => <span class="book-spine" style={`--book-color:${resource.color};--book-height:${[90,100,83,103,94,102,86,97][index]}%;--book-rotation:${[0,0,-3,0,3,0,-2,2][index]}deg`}><span>{resource.name}</span><i>{['Aa', '✳', 'TS', '✦', '≈', 'JS', 'Py', '↗'][index]}</i></span>)}</div>
+          <span class="card-hover-label">Resources [R]</span><kbd>R</kbd>
+        </a>
+        <a class="experiment-card writing-card" href="#writing" aria-label="Writing" aria-keyshortcuts="B">
+          <div class="writing-art" aria-hidden="true"><div class="orbital orbit-one"></div><div class="orbital orbit-two"></div><div class="orbital orbit-three"></div><span>the art of<br /><em>figuring<br />it out.</em></span></div>
+          <div class="writing-preview"><span class="card-eyebrow">Writing</span><strong>Building things.<br />Learning along the way.</strong><p>Starting small, staying curious, and getting better with every project.</p><small>A NOTE ON PROCESS</small></div>
+          <span class="card-hover-label">Writing [B]</span><kbd>B</kbd>
+        </a>
+      </nav>
+      <footer class="experiment-footer"><a href={profile.github} target="_blank" rel="noopener noreferrer">GitHub <ArrowUpRight size={12} /></a><a href="#work">Selected work</a><a href="#services">Let’s connect</a><span class="footer-shortcut">Try W, G, S, R, B</span></footer>
+      <noscript><p class="no-script-note">Explore the sections below, or enable JavaScript for the interactive views.</p></noscript>
+    </div>
+    {experimentSections.map(section => <section class="experiment-detail" id={section.id} data-experiment-panel aria-labelledby={`${section.id}-title`}>
+      <aside class="detail-sidebar">
+        <a href="#" class="detail-back"><ArrowLeft size={12} /> Back</a>
+        <div class:list={['section-symbol', `symbol-${section.id}`]} aria-hidden="true">{section.id === 'work' ? <CodeXml size={32} /> : section.id === 'garden' ? <span>✳</span> : section.id === 'services' ? <Sparkles size={32} /> : section.id === 'resources' ? <Layers size={32} /> : <span>✎</span>}</div>
+        <h2 id={`${section.id}-title`} tabindex="-1"><span>[{section.key}]</span> {section.title}</h2>
+        <p>{section.description}</p><span class="detail-escape">Press Esc to return home.</span>
+      </aside>
+      <div class="detail-content">
+        {section.id === 'work' && <div class="selected-projects">{projects.map((project, index) => <article class="selected-project"><a class="project-art-link" href={`${profile.github}/${project.repository}`} target="_blank" rel="noopener noreferrer" aria-label={`View ${project.name} on GitHub`}><ProjectCover index={index} /><span class="project-open">View project <ArrowUpRight size={14} /></span></a><div class="project-title-row"><h3><a href={`${profile.github}/${project.repository}`} target="_blank" rel="noopener noreferrer">{project.name}</a></h3><span>{project.stack.map(item=>item.name).join(' / ')}</span></div><p>{project.description}</p></article>)}</div>}
+        {section.id === 'garden' && <div class="garden-collection">{gardenNotes.map((note,index) => <article class:list={['garden-entry',note.color]}><span class="entry-number">0{index+1} / A GROWING THOUGHT</span><h3>{note.title}</h3><p>{note.body}</p><span class="note-tag">{note.category}</span></article>)}</div>}
+        {section.id === 'services' && <div class="services-content"><h3>Let’s make<br /><span>something useful.</span></h3><p>I’m exploring the web, experimenting with new tools, and getting better with every project. Here’s where my interests meet what I’m building.</p>{[{title:'Web interfaces',body:'Responsive pages and React applications, with an emphasis on clear layouts and the details that make an interface feel good.',icon:CodeXml},{title:'Thoughtful interactions',body:'Small moments that make software easier to use — from navigation and theme controls to useful feedback.',icon:Layers},{title:'Creative experiments',body:'A place to try something new. Graphics, desktop applications, and little ideas that turn into working software.',icon:Sparkles}].map(({title,body,icon:Icon},index)=><article class="service-row"><span class="service-number">0{index+1}</span><div><Icon size={22} /><h4>{title}</h4><p>{body}</p></div></article>)}<a class="connect-button" href={profile.github} target="_blank" rel="noopener noreferrer">Find me on GitHub <ArrowUpRight size={16} /></a></div>}
+        {section.id === 'resources' && <div class="resources-content"><div class="resource-tabs" role="group" aria-label="Filter resources"><button type="button" data-resource-filter="all" aria-pressed="true">Everything</button><button type="button" data-resource-filter="tools" aria-pressed="false">Toolbox</button><button type="button" data-resource-filter="links" aria-pressed="false">Bookmarks</button></div><section data-resource-group="tools"><h3 class="detail-section-label">My toolbox</h3><div class="tool-collection">{tools.map(tool=><div class="tool-item"><img src={`/icons/${tool.icon}.svg`} alt="" width="32" height="32" loading="lazy" /><span>{tool.name}</span></div>)}</div></section><section data-resource-group="links"><h3 class="detail-section-label">From the shelf</h3><div class="resource-collection">{resourceLinks.map(resource=><a href={resource.url} target="_blank" rel="noopener noreferrer"><span class="resource-book" style={`--book-color:${resource.color}`}>{resource.name.slice(0,2)}</span><span><strong>{resource.name}</strong><small>{resource.detail}</small></span><ArrowUpRight size={16} /></a>)}</div></section></div>}
+        {section.id === 'writing' && <article class="writing-article"><span class="article-kicker">ON BUILDING & LEARNING</span><h3>Building things.<br /><em>Learning along the way.</em></h3><div class="article-byline"><img src="/avatar.jpg" alt="" width="24" height="24" /><span>{profile.name}</span></div><div class="article-art" aria-hidden="true"><span>Make.<br /><em>Learn.</em><br />Repeat.</span><div class="article-orbit"></div></div><p>{profile.intro}</p><h4>Start with a small idea</h4><p>I learn by building — starting with an idea, breaking it into smaller pieces, and improving it as I go. There’s something satisfying about taking a question and turning it into something you can actually use.</p><h4>Care about the details</h4><p>I care about clear interfaces, thoughtful details, and making things useful. Each project is a chance to practice those things, whether it’s a React application, desktop software, or a small experiment with code.</p><h4>Keep exploring</h4><p>I’m exploring the web, experimenting with new tools, and getting better with every project. This is my little space to share that progress.</p><a class="article-work-link" href="#work">Explore what I’m building <ArrowUpRight size={16} /></a></article>}
+      </div>
+    </section>)}
+  </div>
+</Page>
+<script>
+  import '../scripts/header';
+  import '../scripts/experiments';
+</script>
