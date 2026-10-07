@@ -56,13 +56,7 @@ document.addEventListener('keydown', event => {
 const themeToggles = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]'));
 const themeIcons = Array.from(document.querySelectorAll<HTMLElement>('[data-theme-icon]'));
 const media = matchMedia('(prefers-color-scheme: dark)');
-let preference = 'system';
-try {
-  const saved = localStorage.getItem('portfolio-theme');
-  if (saved && ['light', 'dark', 'system'].includes(saved)) preference = saved;
-} catch {}
-function syncTheme() {
-  const dark = preference === 'dark' || (preference === 'system' && media.matches);
+function syncTheme(dark = media.matches) {
   const activeTheme = dark ? 'dark' : 'light';
   document.documentElement.dataset.theme = activeTheme;
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#111111' : '#fcfcfc');
@@ -74,11 +68,9 @@ function syncTheme() {
   });
 }
 syncTheme();
-media.addEventListener('change', syncTheme);
+media.addEventListener('change', () => syncTheme());
 function toggleTheme() {
-  preference = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-  try { localStorage.setItem('portfolio-theme', preference); } catch {}
-  syncTheme();
+  syncTheme(document.documentElement.dataset.theme !== 'dark');
 }
 themeToggles.forEach(button => button.addEventListener('click', toggleTheme));
 document.addEventListener('keydown', event => {
