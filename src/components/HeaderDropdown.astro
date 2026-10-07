@@ -2,26 +2,24 @@
 interface Props {
   name: 'appearance' | 'navigation';
   label: string;
-  title: string;
   toggleId: string;
   panelClass: string;
   placement?: 'top' | 'bottom' | 'left';
 }
 
-const { name, label, title, toggleId, panelClass, placement = 'bottom' } = Astro.props;
+const { name, label, toggleId, panelClass, placement = 'bottom' } = Astro.props;
 const panelId = `${name}-panel`;
 ---
 <div class="relative" data-dropdown={name} data-placement={placement}>
   <button
     type="button"
     id={toggleId}
-    class="group grid size-11 place-items-center rounded-lg bg-transparent p-3 text-muted transition-colors duration-140 hover:bg-surface hover:text-ink aria-expanded:bg-surface aria-expanded:text-ink motion-reduce:transition-none"
+    class="group relative grid size-11 place-items-center rounded-full bg-transparent p-3 text-muted transition-colors duration-140 hover:bg-surface hover:text-ink aria-expanded:bg-surface aria-expanded:text-ink motion-reduce:transition-none"
     data-dropdown-toggle
     data-dropdown-label={label}
     aria-label={`Open ${label}`}
     aria-controls={panelId}
     aria-expanded="false"
-    title={title}
     hidden
   >
     <slot name="icon" />
@@ -29,10 +27,15 @@ const panelId = `${name}-panel`;
   <div
     id={panelId}
     class:list={[
-      'absolute z-10 border border-line bg-background p-1 shadow-[0_8px_24px_#0000000d,0_2px_5px_#00000005] motion-reduce:animate-none',
+      'absolute z-10 border border-line bg-background p-1 shadow-[0_8px_24px_#00000008,0_2px_4px_#00000004] motion-reduce:animate-none',
       placement === 'left'
-        ? 'right-[calc(100%+10px)] top-1/2 -translate-y-1/2 rounded-full animate-reveal-theme'
-        : ['right-0 rounded-[10px] animate-reveal-menu', placement === 'top' ? 'bottom-[calc(100%+8px)]' : 'top-[calc(100%+8px)]'],
+        ? [
+            'right-[calc(100%+10px)]',
+            name === 'navigation'
+              ? 'top-1/2 -translate-y-1/2 rounded-full animate-reveal-menu-left'
+              : 'top-1/2 -translate-y-1/2 rounded-full animate-reveal-theme',
+          ]
+        : ['right-0 rounded-[10px] animate-reveal-menu', placement === 'top' ? 'bottom-[calc(100%+4px)]' : 'top-[calc(100%+4px)]'],
       panelClass,
     ]}
     data-dropdown-panel

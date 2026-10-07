@@ -1,7 +1,7 @@
 ---
 import {
-  ArrowUpRight, BookOpen, Coffee, FlaskConical, Folder,
-  Layers, LayoutGrid, X,
+  BookOpen, Coffee, FlaskConical, Folder,
+  Layers,
 } from '@lucide/astro';
 import HeaderDropdown from './HeaderDropdown.astro';
 import ThemeToggle from './ThemeToggle.astro';
@@ -16,7 +16,7 @@ const navigationIcons: Record<string, typeof Folder> = {
   uses: Coffee,
   experiments: FlaskConical,
 };
-const rowClass = 'group flex min-h-11 w-full items-center gap-3 rounded-md bg-transparent px-3 py-2 text-left text-sm leading-5 text-ink hover:bg-surface aria-[current=page]:bg-surface focus-visible:-outline-offset-2';
+const linkClass = 'navigation-link relative grid size-9 shrink-0 place-items-center rounded-full transition-colors duration-150 focus-visible:-outline-offset-2 motion-reduce:transition-none';
 ---
 <header class="site-header">
   <a href="/" class="identity" aria-label={`${profile.name}, home`}>
@@ -29,26 +29,20 @@ const rowClass = 'group flex min-h-11 w-full items-center gap-3 rounded-md bg-tr
     <HeaderDropdown
       name="navigation"
       label="navigation"
-      title="Navigation"
       toggleId="menu-toggle"
-      panelClass="w-48 max-w-[calc(100vw-32px)]"
+      placement="left"
+      panelClass="w-max"
     >
       <Fragment slot="icon">
-        <LayoutGrid size={16} stroke-width={1.5} class="group-aria-expanded:hidden" />
-        <X size={16} stroke-width={1.5} class="hidden group-aria-expanded:block" />
+        <span class="menu-mark" aria-hidden="true"><span></span><span></span></span>
       </Fragment>
-      <nav class="grid gap-px" aria-label="Main navigation">
+      <nav class="flex items-center gap-0.5" aria-label="Main navigation">
         {destinations.map(({ slug, title }) => {
           const Icon = navigationIcons[slug] ?? Folder;
           return (
-            <a class={rowClass} href={`/${slug}/`} aria-current={currentPath === `/${slug}` ? 'page' : undefined}>
-              <Icon size={16} stroke-width={1.5} class="shrink-0 text-muted" />
-              <span>{title}</span>
-              <ArrowUpRight
-                size={13}
-                stroke-width={1.7}
-                class="ml-auto -translate-x-0.5 translate-y-0.5 text-muted opacity-0 transition-[opacity,translate] duration-140 group-hover:translate-0 group-hover:opacity-100 group-focus-visible:translate-0 group-focus-visible:opacity-100 group-aria-[current=page]:translate-0 group-aria-[current=page]:opacity-100 motion-reduce:transition-none"
-              />
+            <a class={linkClass} data-route={slug} href={`/${slug}/`} aria-label={title} aria-current={currentPath === `/${slug}` ? 'page' : undefined}>
+              <Icon size={16} stroke-width={1.6} aria-hidden="true" />
+              <span class="route-tooltip" aria-hidden="true">{title}</span>
             </a>
           );
         })}
@@ -56,6 +50,92 @@ const rowClass = 'group flex min-h-11 w-full items-center gap-3 rounded-md bg-tr
     </HeaderDropdown>
   </div>
 </header>
+
+<style>
+  .navigation-link {
+    --accent: #5964c7;
+    color: var(--accent);
+    background: transparent;
+  }
+
+  .navigation-link[data-route='projects'] { --accent: #a78040; }
+  .navigation-link[data-route='stack'] { --accent: #8271ad; }
+  .navigation-link[data-route='notes'] { --accent: #5a82a8; }
+  .navigation-link[data-route='uses'] { --accent: #a77560; }
+  .navigation-link[data-route='experiments'] { --accent: #568b78; }
+
+  :global([data-theme='dark']) .navigation-link[data-route='projects'] { --accent: #d9b77d; }
+  :global([data-theme='dark']) .navigation-link[data-route='stack'] { --accent: #b5a4d6; }
+  :global([data-theme='dark']) .navigation-link[data-route='notes'] { --accent: #94b5d4; }
+  :global([data-theme='dark']) .navigation-link[data-route='uses'] { --accent: #d2a28a; }
+  :global([data-theme='dark']) .navigation-link[data-route='experiments'] { --accent: #90beab; }
+
+  .navigation-link:is(:hover, :focus-visible, [aria-current='page']) {
+    background: var(--surface);
+    outline-color: var(--muted);
+  }
+
+  .route-tooltip {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    padding: 3px 8px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: var(--background);
+    color: var(--accent);
+    box-shadow: 0 3px 10px rgb(0 0 0 / 5%);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    line-height: 1.4;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, 3px);
+    transition: opacity 140ms ease, transform 140ms ease, visibility 140ms;
+  }
+
+  .navigation-link:focus-visible .route-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+  }
+
+  @media (hover: hover) {
+    .navigation-link:hover .route-tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  .menu-mark {
+    position: relative;
+    width: 16px;
+    height: 16px;
+  }
+
+  .menu-mark span {
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 16px;
+    height: 1px;
+    border-radius: 1px;
+    background: currentColor;
+    transition: width 180ms ease, top 180ms ease, transform 180ms ease;
+  }
+
+  .menu-mark span:last-child { top: 11px; width: 10px; }
+  :global(button:hover) .menu-mark span:last-child { width: 16px; }
+  :global(button[aria-expanded='true']) .menu-mark span { top: 8px; transform: rotate(45deg); }
+  :global(button[aria-expanded='true']) .menu-mark span:last-child { width: 16px; transform: rotate(-45deg); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu-mark span, .route-tooltip { transition: none; }
+  }
+</style>
 
 <script>
   import '../scripts/header';
