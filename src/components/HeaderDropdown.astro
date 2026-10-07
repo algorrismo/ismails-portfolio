@@ -44,3 +44,15 @@ const panelId = `${name}-panel`;
     <slot />
   </div>
 </div>
+
+<style>
+  /* Keep the hover area connected across the gap to the menu button. */
+  [data-dropdown='navigation'][data-placement='left'] [data-dropdown-panel]::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 11px;
+    height: 100%;
+  }
+</style>

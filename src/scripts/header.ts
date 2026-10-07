@@ -15,6 +15,14 @@ function openGroup(group: typeof groups[number]) {
 }
 groups.forEach(group => {
   group.toggle.hidden = false;
+  if (group.root.dataset.dropdown === 'navigation') {
+    group.root.addEventListener('pointerenter', event => {
+      if (event.pointerType === 'mouse' && matchMedia('(hover: hover)').matches) openGroup(group);
+    });
+    group.root.addEventListener('pointerleave', event => {
+      if (event.pointerType === 'mouse' && !group.panel.contains(document.activeElement)) setOpen(group, false);
+    });
+  }
   group.toggle.addEventListener('click', () => group.panel.hidden ? openGroup(group) : setOpen(group, false));
   group.root.addEventListener('focusout', event => {
     if (!group.root.contains(event.relatedTarget as Node)) setOpen(group, false);

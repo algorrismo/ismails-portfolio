@@ -4,7 +4,6 @@ import {
   Layers,
 } from '@lucide/astro';
 import HeaderDropdown from './HeaderDropdown.astro';
-import ThemeToggle from './ThemeToggle.astro';
 import { profile } from '../data/portfolio';
 import { destinations } from '../data/navigation';
 
@@ -24,8 +23,6 @@ const linkClass = 'navigation-link relative grid size-9 shrink-0 place-items-cen
   </a>
 
   <div class="flex items-center gap-1.5">
-    {currentPath !== '' && <ThemeToggle />}
-
     <HeaderDropdown
       name="navigation"
       label="navigation"
