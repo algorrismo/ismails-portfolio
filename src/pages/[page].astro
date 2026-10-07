@@ -7,10 +7,10 @@ export function getStaticPaths() {
 const { title } = Astro.props;
 ---
 <Page title={`${title} — Ismail Hossain`}>
-  <div class="mb-12"><h1 class="font-editorial text-xl leading-[1.4] font-normal italic">{title}</h1></div>
-  <section class="mb-12" aria-labelledby="coming-soon-title">
-    <h2 id="coming-soon-title" class="mb-2 text-base leading-normal font-normal text-muted">Coming soon</h2>
+  <div class="page-intro"><p class="eyebrow">In progress</p><h1 class="page-title">{title}</h1></div>
+  <section class="text-section" aria-labelledby="coming-soon-title">
+    <h2 id="coming-soon-title" class="section-title">Coming soon</h2>
     <p>Something is taking shape here. Check back soon.</p>
-    <a class="mt-8 inline-flex items-center gap-2 text-[13px] text-muted hover:text-ink" href="/"><span aria-hidden="true">←</span> Back home</a>
+    <a class="text-link mt-6" href="/"><span aria-hidden="true">←</span> Back home</a>
   </section>
 </Page>

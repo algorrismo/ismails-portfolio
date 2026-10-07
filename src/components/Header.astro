@@ -20,12 +20,12 @@ const themes = [
   { value: 'dark', label: 'Dark', Icon: Moon },
   { value: 'system', label: 'System', Icon: Monitor },
 ];
-const rowClass = 'group flex min-h-8 w-full items-center gap-[9px] rounded-md bg-transparent px-2 py-1.5 text-left text-xs leading-5 text-ink hover:bg-surface aria-[current=page]:bg-surface focus-visible:-outline-offset-2 pointer-coarse:min-h-10';
+const rowClass = 'group flex min-h-11 w-full items-center gap-3 rounded-md bg-transparent px-3 py-2 text-left text-sm leading-5 text-ink hover:bg-surface aria-[current=page]:bg-surface focus-visible:-outline-offset-2';
 ---
-<header class="mb-8 flex items-center justify-between">
-  <a href="/" class="inline-flex" aria-label={`${profile.name}, home`}>
-    <img class="size-8 rounded-full object-cover" src="/avatar.jpg" alt="" width="32" height="32" />
-    <span class="sr-only">{profile.name}</span>
+<header class="site-header">
+  <a href="/" class="identity" aria-label={`${profile.name}, home`}>
+    <img class="size-10 rounded-full object-cover" src="/avatar.jpg" alt="" width="40" height="40" />
+    <span><span class="identity-name">{profile.name}</span><span class="identity-role">Software developer</span></span>
   </a>
 
   <div class="flex items-center gap-1.5">
@@ -34,7 +34,7 @@ const rowClass = 'group flex min-h-8 w-full items-center gap-[9px] rounded-md bg
       label="appearance settings"
       title="Appearance"
       toggleId="appearance-toggle"
-      panelClass="w-36"
+      panelClass="w-44"
     >
       <Fragment slot="icon">
         {themes.map(({ value, Icon }) => (
@@ -59,7 +59,7 @@ const rowClass = 'group flex min-h-8 w-full items-center gap-[9px] rounded-md bg
       label="navigation"
       title="Navigation"
       toggleId="menu-toggle"
-      panelClass="w-max max-w-[calc(100vw-32px)]"
+      panelClass="w-48 max-w-[calc(100vw-32px)]"
     >
       <Fragment slot="icon">
         <LayoutGrid size={18} stroke-width={1.5} class="group-aria-expanded:hidden" />
@@ -70,7 +70,7 @@ const rowClass = 'group flex min-h-8 w-full items-center gap-[9px] rounded-md bg
           const Icon = navigationIcons[slug] ?? Folder;
           return (
             <a class={rowClass} href={`/${slug}/`} aria-current={currentPath === `/${slug}` ? 'page' : undefined}>
-              <Icon size={20} stroke-width={1.55} class="shrink-0 -rotate-4 text-muted group-even:rotate-3" />
+              <Icon size={18} stroke-width={1.5} class="shrink-0 text-muted" />
               <span>{title}</span>
               <ArrowUpRight
                 size={13}

@@ -25,11 +25,11 @@ const { title = 'Ismail Hossain — Developer' } = Astro.props;
       } catch {}
     </script>
   </head>
-  <body class="text-base leading-normal antialiased">
+  <body class="text-base antialiased">
     <a class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-4 focus:z-2 focus:bg-background focus:px-3.5 focus:py-2" href="#main">Skip to content</a>
-    <div class="mx-auto w-full max-w-lg px-4 pt-8 pb-32 sm:pt-12 sm:pb-24">
+    <div class="site-shell">
       <Header />
-      <main id="main"><slot /></main>
+      <main id="main" tabindex="-1"><slot /></main>
     </div>
   </body>
 </html>

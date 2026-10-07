@@ -1,30 +1,33 @@
 ---
 import Page from '../layouts/Page.astro';
 import GitHubIcon from '../components/icons/GitHubIcon.astro';
+import { ArrowUpRight } from '@lucide/astro';
 import { profile } from '../data/portfolio';
 ---
 <Page>
-  <div class="mb-12">
-    <h1 class="font-editorial text-xl leading-[1.4] font-normal italic">{profile.tagline}</h1>
+  <div class="page-intro">
+    <p class="eyebrow">A personal corner of the web</p>
+    <h1 class="page-title">{profile.tagline}</h1>
   </div>
-  <section class="mb-12 sm:min-h-[152px]" id="intro" aria-labelledby="intro-title">
-    <h2 id="intro-title" class="mb-2 text-base leading-normal font-normal text-muted">Intro</h2>
+  <section class="text-section" id="intro" aria-labelledby="intro-title">
+    <h2 id="intro-title" class="section-title">A little about me</h2>
     <p>{profile.intro}</p>
   </section>
-  <section class="mb-12 sm:min-h-32" aria-labelledby="approach-title">
-    <h2 id="approach-title" class="mb-2 text-base leading-normal font-normal text-muted">How I work</h2>
+  <section class="text-section" aria-labelledby="approach-title">
+    <h2 id="approach-title" class="section-title">How I work</h2>
     <p>I learn by building — starting with an idea, breaking it into smaller pieces, and improving it as I go. I care about clear interfaces, thoughtful details, and making things useful.</p>
   </section>
-  <section class="mb-12 sm:min-h-[140px]" aria-labelledby="curiosity-title">
-    <h2 id="curiosity-title" class="mb-2 text-base leading-normal font-normal text-muted">What keeps me curious</h2>
+  <section class="text-section" aria-labelledby="curiosity-title">
+    <h2 id="curiosity-title" class="section-title">What keeps me curious</h2>
     <p>I'm exploring the web, experimenting with new tools, and getting better with every project. This is my little space to share that progress.</p>
   </section>
   <!-- Optional project and toolbox sections live in components/SavedWork.astro. -->
-  <section class="-mt-3" id="connect" aria-labelledby="connect-title">
-    <h2 id="connect-title" class="sr-only">Elsewhere</h2>
-
-    <a class="inline-flex size-5 items-center justify-center hover:text-muted" aria-label="Ismail on GitHub (opens in a new tab)" title="GitHub" href={profile.github} target="_blank" rel="noopener noreferrer">
-      <GitHubIcon class="size-5" />
+  <section class="connect-section" id="connect" aria-labelledby="connect-title">
+    <h2 id="connect-title" class="section-title">Elsewhere</h2>
+    <a class="text-link" aria-label="Ismail on GitHub (opens in a new tab)" href={profile.github} target="_blank" rel="noopener noreferrer">
+      <GitHubIcon class="size-4" />
+      <span>Find me on GitHub</span>
+      <ArrowUpRight size={16} aria-hidden="true" />
     </a>
   </section>
 </Page>
