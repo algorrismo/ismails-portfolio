@@ -55,4 +55,21 @@ const panelId = `${name}-panel`;
     width: 11px;
     height: 100%;
   }
+
+  @media (max-width: 400px) {
+    [data-dropdown='navigation'][data-placement='left'] [data-dropdown-panel] {
+      top: calc(100% + 4px);
+      right: 0;
+      transform: none;
+      animation: none;
+    }
+
+    [data-dropdown='navigation'][data-placement='left'] [data-dropdown-panel]::after {
+      top: -5px;
+      left: auto;
+      right: 0;
+      width: 44px;
+      height: 5px;
+    }
+  }
 </style>
