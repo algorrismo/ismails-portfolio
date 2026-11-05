@@ -43,6 +43,7 @@
     --muted: #696969;
     --line: #e4e4e7;
     --surface: #f2f2f2;
+    --brand-linkedin: #0a66c2;
     color-scheme: light;
     font-synthesis: none;
   }
@@ -52,29 +53,52 @@
     --muted: #929292;
     --line: #303030;
     --surface: #222222;
+    --brand-linkedin: #79b6f2;
     color-scheme: dark;
   }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+      --background: #111111;
+      --ink: #e5e5e5;
+      --muted: #929292;
+      --line: #303030;
+      --surface: #222222;
+      --brand-linkedin: #79b6f2;
+      color-scheme: dark;
+    }
+  }
   [hidden] { display: none !important; }
-  a, button { -webkit-tap-highlight-color: transparent; }
-  a:focus-visible, button:focus-visible, input:focus-visible {
+  html { scroll-padding-block: 96px 24px; }
+  a, button, summary { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible, select:focus-visible, textarea:focus-visible {
     @apply outline-2 outline-muted outline-offset-4;
   }
   button { @apply cursor-pointer; }
-  body { line-height: 1.5; }
+  body { line-height: 1.5; overflow-wrap: break-word; }
+  h1, h2, h3 { text-wrap: balance; }
   ::selection { @apply bg-[#dcdcdc] text-[#111]; }
 }
 
 @layer components {
   .site-shell { width: 100%; max-width: 512px; margin-inline: auto; padding: 26px max(20px, env(safe-area-inset-right)) max(72px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left)); }
-  .site-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 26px; }
+  .site-header { position: relative; z-index: 30; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 32px; }
+  .site-header noscript { width: 100%; }
+  .skip-link { position: fixed; top: 12px; left: 16px; z-index: 100; padding: 10px 16px; border-radius: 8px; background: var(--ink); color: var(--background); transform: translateY(calc(-100% - 24px)); }
+  .skip-link:focus { transform: none; }
   .identity { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-left: -6px; border-radius: 50%; }
-  .page-title { font-family: var(--font-editorial); font-size: 20px; font-weight: 400; font-style: italic; line-height: 1.4; }
+  .page-title { font-family: var(--font-editorial); font-size: clamp(22px, 2.6vw, 24px); font-weight: 400; font-style: italic; line-height: 1.4; }
+  .page-description { margin-top: 16px; color: var(--muted); line-height: 1.7; text-wrap: pretty; }
+  .content-section { margin-top: 36px; }
   .text-section { margin-top: 48px; }
-  .section-title { margin-bottom: 8px; font-size: 16px; font-weight: 400; line-height: 1.5; color: var(--muted); }
+  .section-title { margin-bottom: 10px; font-size: 14px; font-weight: 500; line-height: 1.5; color: var(--muted); }
   .text-section > p { color: var(--ink); line-height: 1.7; overflow-wrap: anywhere; text-wrap: pretty; }
   .connect-section { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 36px; }
-  .social-link { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; margin-left: -12px; border-radius: 6px; }
-  .social-link:hover { color: var(--muted); }
+  .social-links { display: flex; align-items: center; gap: 8px; margin-left: -12px; }
+  .social-link { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 8px; transition: background-color 150ms ease; }
+  .social-link:is(:hover, :active) { background: var(--surface); }
+  .page-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-top: 40px; }
+  .page-footer a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: var(--muted); font-size: 14px; }
+  .page-footer a:hover { color: var(--ink); }
   .text-link { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 14px; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 5px; transition: text-decoration-color 140ms; }
   .text-link:hover { text-decoration-color: currentColor; }
   @media (max-width: 480px) {
@@ -87,6 +111,6 @@
     .site-shell { padding-top: 42px; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .text-link { transition: none; }
+    .text-link, .social-link { transition: none; }
   }
 }

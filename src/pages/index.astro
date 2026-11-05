@@ -2,7 +2,7 @@
 import Page from '../layouts/Page.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import GitHubIcon from '../components/icons/GitHubIcon.astro';
-import { profile } from '../data/portfolio';
+import { profile } from '../data/profile';
 ---
 <Page>
   <div class="page-intro">
@@ -23,7 +23,7 @@ import { profile } from '../data/portfolio';
   <!-- Optional project and toolbox sections live in components/SavedWork.astro. -->
   <section class="connect-section" id="connect" aria-labelledby="connect-title">
     <h2 id="connect-title" class="sr-only">Elsewhere</h2>
-    <div class="flex items-center">
+    <div class="social-links">
       <a class="social-link" aria-label="Ismail on GitHub (opens in a new tab)" title="GitHub" href={profile.github} target="_blank" rel="noopener noreferrer">
         <GitHubIcon class="size-4" />
       </a>
@@ -36,6 +36,5 @@ import { profile } from '../data/portfolio';
 </Page>
 
 <style>
-  .linkedin-link { margin-left: 0; color: #0a66c2; }
-  .linkedin-link:hover { color: #004182; }
+  .linkedin-link { color: var(--brand-linkedin); }
 </style>

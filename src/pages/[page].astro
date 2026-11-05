@@ -2,8 +2,9 @@
 import Page from '../layouts/Page.astro';
 import { CornerUpLeft } from '@lucide/astro';
 import { destinations } from '../data/navigation';
+import ThemeToggle from '../components/ThemeToggle.astro';
 export function getStaticPaths() {
-  return destinations.filter(destination => destination.slug !== 'experiments').map(destination => ({ params: { page: destination.slug }, props: { title: destination.title } }));
+  return destinations.filter(destination => !['experiments', 'projects', 'stack'].includes(destination.slug)).map(destination => ({ params: { page: destination.slug }, props: { title: destination.title } }));
 }
 const { title } = Astro.props;
 ---
@@ -12,34 +13,9 @@ const { title } = Astro.props;
   <section class="text-section" aria-labelledby="coming-soon-title">
     <h2 id="coming-soon-title" class="section-title">Coming soon</h2>
     <p>Something is taking shape here. Check back soon.</p>
-    <a class="home-link" href="/" aria-label="Back to home">
-      <CornerUpLeft size={16} stroke-width={1.25} aria-hidden="true" />
-    </a>
   </section>
+  <footer class="page-footer">
+    <a href="/"><CornerUpLeft size={16} stroke-width={1.5} aria-hidden="true" /> Back to home</a>
+    <ThemeToggle />
+  </footer>
 </Page>
-
-<style>
-  .home-link {
-    position: relative;
-    display: grid;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-    margin-top: 24px;
-    border-radius: 50%;
-    background: transparent;
-    color: var(--muted);
-    transition: color 150ms ease, background-color 150ms ease;
-  }
-
-  @media (hover: hover) {
-    .home-link:hover {
-      background-color: var(--surface);
-      color: var(--ink);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .home-link { transition: none; }
-  }
-</style>

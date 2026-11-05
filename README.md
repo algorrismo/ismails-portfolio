@@ -9,9 +9,67 @@ npm ci
 npm run dev
 ```
 
-Edit `src/pages/index.astro` to customize the homepage.
-
 Run `npm run check` to check Astro templates and TypeScript before building.
+
+## Project structure
+
+```text
+src/
+├── components/           # Reusable Astro UI
+│   ├── experiments/     # Experimental portfolio illustrations
+│   ├── icons/           # Brand icons
+│   ├── work/            # Project list and toolbox
+│   ├── Header.astro
+│   ├── HeaderDropdown.astro
+│   ├── SavedWork.astro   # Optional homepage sections
+│   └── ThemeToggle.astro
+├── data/                 # Content and its TypeScript contracts
+│   ├── experiments.ts   # Garden notes, resources, section metadata
+│   ├── navigation.ts    # Header destinations
+│   ├── profile.ts       # Name, bio, GitHub URL, tagline
+│   ├── projects.ts      # Projects, technology stacks, repositories
+│   └── tools.ts         # Toolbox and shared Technology type
+├── layouts/              # Shared document shell and metadata
+├── pages/                # File-based routes
+├── scripts/              # Browser interactions
+└── styles/               # Global and experimental styles
+public/                   # Static assets: avatar, fonts, SVG icons
+```
+
+### Where to make changes
+
+- **Bio and identity:** `src/data/profile.ts`.
+- **Projects:** `src/data/projects.ts`. Entries are checked against the `Project`
+  interface; icon keys are limited to the supported project icons.
+- **Technologies:** `src/data/tools.ts`; SVG filenames refer to `public/icons/`.
+- **Homepage content and layout:** `src/pages/index.astro`.
+- **Navigation destinations:** `src/data/navigation.ts`.
+- **Theme and menu behavior:** `src/scripts/header.ts`.
+- **Experimental portfolio:** `src/pages/experiments.astro`, with its dedicated
+  components, data, script, and stylesheet.
+
+Keep content in `data/`, reusable markup in `components/`, and browser behavior
+in `scripts/`. Route files compose those pieces. `/projects/` and `/stack/` render the existing
+project and technology data. `/notes/` and `/uses/` remain honest placeholders
+until content is ready. The homepage stays minimal.
+
+## UI behavior and review
+
+- The hamburger reveals a labelled horizontal menu on desktop and a vertical
+  menu on screens up to 600px. Hover-opened menus stay open when the pointer
+  leaves; click the toggle/outside, press Escape, or Tab out to close.
+- Menu links support arrow keys, Home, End, and ordinary Tab navigation.
+- Theme preference persists locally; without JavaScript, the site follows the
+  system theme and provides plain navigation links.
+- **Alt + Shift + T** toggles the theme. On `/experiments/`, **Alt + Shift +
+  W/G/S/R/B** opens the matching section. Plain letters do not trigger actions.
+- Experimental project previews have a pause/resume button, pause while hovered
+  or focused, and do not auto-rotate with reduced motion enabled.
+
+When changing UI, check all routes at 320px, 375px, 768px, desktop, and landscape
+sizes, in both themes. Verify menu dismissal, visible keyboard focus, browser
+Back/Forward, reduced motion, and no-JavaScript navigation. Automated
+accessibility checks complement—but do not replace—manual usability review.
 
 ## Components and icons
 

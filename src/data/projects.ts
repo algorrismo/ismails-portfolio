@@ -1,10 +1,14 @@
-export const profile = {
-  name: 'Ismail Hossain',
-  handle: 'algorrismo',
-  github: 'https://github.com/algorrismo',
-  tagline: 'Building things. Learning along the way.',
-  intro: "Hey, I'm Ismail. I build web interfaces, explore software development, and learn by making things. My projects range from React applications to desktop software and small experiments with code.",
-};
+import type { Technology } from './tools';
+
+export type ProjectIcon = 'pitch' | 'grid' | 'waves' | 'chart';
+
+export interface Project {
+  name: string;
+  description: string;
+  stack: Technology[];
+  repository: string;
+  icon: ProjectIcon;
+}
 
 export const projects = [
   {
@@ -35,21 +39,4 @@ export const projects = [
     repository: 'expense-tracker',
     icon: 'chart',
   },
-];
-
-export const tools = [
-  { name: 'Tailwind CSS', icon: 'tailwindcss' },
-  { name: 'JavaScript', icon: 'javascript' },
-  { name: 'React', icon: 'react' },
-  { name: 'Next.js', icon: 'nextjs' },
-  { name: 'NestJS', icon: 'nestjs' },
-  { name: 'Astro', icon: 'astro' },
-  { name: 'TypeScript', icon: 'typescript' },
-  { name: 'Node.js', icon: 'nodejs' },
-  { name: 'HTML', icon: 'html5' },
-  { name: 'CSS', icon: 'css3' },
-  { name: 'Python', icon: 'python' },
-  { name: 'C++', icon: 'cplusplus' },
-  { name: 'C#', icon: 'csharp' },
-  { name: 'Git', icon: 'git' },
-];
+] satisfies Project[];

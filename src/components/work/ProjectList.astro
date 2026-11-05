@@ -1,0 +1,52 @@
+---
+import { ChartColumn, CircleDot, LayoutGrid, WavesHorizontal } from '@lucide/astro';
+import { profile } from '../../data/profile';
+import { projects, type ProjectIcon } from '../../data/projects';
+
+const projectIcons: Record<ProjectIcon, typeof CircleDot> = {
+  pitch: CircleDot,
+  grid: LayoutGrid,
+  waves: WavesHorizontal,
+  chart: ChartColumn,
+};
+---
+<section aria-labelledby="work-title" class="mb-12">
+  <h2 id="work-title" class="section-title">Selected work</h2>
+  <ul class="mt-1 mb-4">
+    {projects.map(project => {
+      const ProjectIcon = projectIcons[project.icon];
+      return (
+        <li class="border-b border-line">
+        <a
+          class="group relative flex gap-4 rounded-md py-5 focus-visible:-outline-offset-2"
+          href={`${profile.github}/${project.repository}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span class="mt-0.5 grid size-8.75 shrink-0 place-items-center rounded-[7px] border border-line bg-surface">
+            <ProjectIcon size={19} stroke-width={1.7} />
+          </span>
+          <div class="min-w-0 flex-1">
+            <h3 class="mb-1 text-[15px] leading-[1.6] font-medium text-ink group-hover:underline group-hover:underline-offset-4">
+              {project.name}<span class="sr-only"> (opens in a new tab)</span>
+            </h3>
+            <p class="mb-2 text-sm leading-[1.75] text-muted">{project.description}</p>
+            <div class="mt-2 flex flex-wrap gap-x-3 gap-y-2 font-mono text-xs text-muted">
+              {project.stack.map(tech => (
+                <span class="inline-flex items-center gap-1.25">
+                  <img class="object-contain" src={`/icons/${tech.icon}.svg`} alt="" width="14" height="14" loading="lazy" />
+                  {tech.name}
+                </span>
+              ))}
+            </div>
+          </div>
+          <span class="text-[15px] text-muted transition-transform duration-180 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none" aria-hidden="true">↗</span>
+        </a>
+        </li>
+      );
+    })}
+  </ul>
+  <a class="inline-flex min-h-11 items-center text-sm text-muted hover:text-ink" href={`${profile.github}?tab=repositories`} target="_blank" rel="noopener noreferrer">
+    More on GitHub <span class="ml-1.5" aria-hidden="true">↗</span>
+  </a>
+</section>

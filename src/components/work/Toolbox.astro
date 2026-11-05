@@ -1,0 +1,21 @@
+---
+import { tools } from '../../data/tools';
+---
+<section aria-labelledby="tools-title" class="mb-12">
+  <h2 id="tools-title" class="section-title">Tools & technologies</h2>
+  <p>The languages, frameworks, and tools in my orbit.</p>
+  <div class="group mt-5 rounded-[18px] border border-line bg-surface px-4.5 py-6.25 max-[480px]:px-3 max-[480px]:py-5.5">
+    <ul class="grid grid-cols-5 gap-x-2.5 gap-y-4.5 max-[480px]:grid-cols-4 max-[480px]:gap-x-2 max-[480px]:gap-y-3.75 max-[350px]:grid-cols-3">
+      {tools.map(tool => (
+        <li class="min-w-0">
+          <div class="flex min-h-24 flex-col items-center gap-2 rounded-xl border border-line bg-background px-1 py-3 text-center text-xs leading-normal text-ink">
+            <span class="grid size-9.5 place-items-center rounded-lg">
+              <img class="object-contain" src={`/icons/${tool.icon}.svg`} alt="" width="30" height="30" loading="lazy" />
+            </span>
+            <span>{tool.name}</span>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

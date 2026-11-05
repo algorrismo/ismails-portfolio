@@ -7,14 +7,14 @@ import { Moon, Sun } from '@lucide/astro';
   data-theme-toggle
   class="theme-toggle relative grid size-11 place-items-center rounded-full bg-transparent text-muted transition-colors duration-150 hover:bg-surface hover:text-ink motion-reduce:transition-none"
   aria-label="Switch to dark mode"
-  aria-keyshortcuts="T"
+  aria-keyshortcuts="Alt+Shift+T"
   hidden
 >
   <span data-theme-icon="light"><Sun size={16} stroke-width={1.25} /></span>
   <span data-theme-icon="dark" hidden><Moon size={16} stroke-width={1.25} /></span>
   <span class="theme-tooltip" aria-hidden="true">
-    <span class="theme-tooltip-label">Toggle</span>
-    <kbd>T</kbd>
+    <span class="theme-tooltip-label">Theme</span>
+    <kbd>Alt ⇧ T</kbd>
   </span>
 </button>
 
@@ -22,7 +22,7 @@ import { Moon, Sun } from '@lucide/astro';
   .theme-tooltip {
     position: absolute;
     bottom: calc(100% + 6px);
-    left: 50%;
+    right: 0;
     z-index: 20;
     display: flex;
     align-items: center;
@@ -37,7 +37,7 @@ import { Moon, Sun } from '@lucide/astro';
     pointer-events: none;
     opacity: 0;
     visibility: hidden;
-    transform: translate(-50%, 4px);
+    transform: translateY(4px);
     transition: opacity 150ms ease, transform 150ms ease, visibility 150ms;
   }
 
@@ -63,14 +63,14 @@ import { Moon, Sun } from '@lucide/astro';
   .theme-toggle:focus-visible .theme-tooltip {
     opacity: 1;
     visibility: visible;
-    transform: translate(-50%, 0);
+    transform: translateY(0);
   }
 
   @media (hover: hover) {
     .theme-toggle:hover .theme-tooltip {
       opacity: 1;
       visibility: visible;
-      transform: translate(-50%, 0);
+      transform: translateY(0);
     }
   }
 

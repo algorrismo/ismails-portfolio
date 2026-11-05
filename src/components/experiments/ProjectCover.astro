@@ -2,7 +2,7 @@
 interface Props { index: number; }
 const { index } = Astro.props;
 ---
-<div class:list={['project-cover', `cover-${index}`]} aria-hidden="true">
+<div class:list={['project-cover', `cover-${index}`]} role="img" aria-hidden="true">
   {index === 0 && <>
     <div class="pitch-glow"></div>
     <div class="football-app">

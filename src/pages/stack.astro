@@ -1,0 +1,15 @@
+---
+import { ArrowLeft } from '@lucide/astro';
+import Page from '../layouts/Page.astro';
+import Toolbox from '../components/work/Toolbox.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import { profile } from '../data/profile';
+---
+<Page title={`Stack — ${profile.name}`}>
+  <div class="page-intro"><h1 class="page-title">Everyday stack</h1></div>
+  <div class="content-section"><Toolbox /></div>
+  <footer class="page-footer">
+    <a href="/"><ArrowLeft size={16} stroke-width={1.5} aria-hidden="true" /> Back to home</a>
+    <ThemeToggle />
+  </footer>
+</Page>

@@ -8,7 +8,7 @@ const { title = 'Ismail Hossain — Developer', experimental = false } = Astro.p
 <html lang="en" class="bg-background font-sans text-ink">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#fcfcfc" />
     <meta name="description" content="Ismail Hossain's personal portfolio. Web interfaces, software projects, and experiments in code." />
     <meta property="og:title" content={title} />
@@ -31,7 +31,7 @@ const { title = 'Ismail Hossain — Developer', experimental = false } = Astro.p
     </script>
   </head>
   <body class="text-base antialiased">
-    <a class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-4 focus:z-2 focus:bg-background focus:px-3.5 focus:py-2" href="#main">Skip to content</a>
+    <a class="skip-link" href="#main">Skip to content</a>
     <div class={experimental ? 'experimental-shell' : 'site-shell'}>
       {!experimental && <Header />}
       <main id="main" tabindex="-1"><slot /></main>

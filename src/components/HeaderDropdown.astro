@@ -2,42 +2,33 @@
 interface Props {
   name: 'appearance' | 'navigation';
   label: string;
+  title?: string;
   toggleId: string;
   panelClass: string;
   placement?: 'top' | 'bottom' | 'left';
 }
 
-const { name, label, toggleId, panelClass, placement = 'bottom' } = Astro.props;
+const { name, label, title, toggleId, panelClass, placement = 'bottom' } = Astro.props;
 const panelId = `${name}-panel`;
 ---
-<div class="relative" data-dropdown={name} data-placement={placement}>
+<div class="dropdown relative" data-dropdown={name} data-placement={placement}>
   <button
     type="button"
     id={toggleId}
-    class="group relative grid size-11 place-items-center rounded-full bg-transparent p-3 text-muted transition-colors duration-140 hover:bg-surface hover:text-ink aria-expanded:bg-surface aria-expanded:text-ink motion-reduce:transition-none"
+    class="group relative grid size-11 place-items-center rounded-full bg-transparent p-3 text-muted transition-colors duration-150 hover:bg-surface hover:text-ink aria-expanded:bg-surface aria-expanded:text-ink motion-reduce:transition-none"
     data-dropdown-toggle
     data-dropdown-label={label}
     aria-label={`Open ${label}`}
     aria-controls={panelId}
     aria-expanded="false"
+    title={title}
     hidden
   >
     <slot name="icon" />
   </button>
   <div
     id={panelId}
-    class:list={[
-      'absolute z-10 border border-line bg-background p-1 shadow-[0_8px_24px_#00000008,0_2px_4px_#00000004] motion-reduce:animate-none',
-      placement === 'left'
-        ? [
-            'right-[calc(100%+10px)]',
-            name === 'navigation'
-              ? 'top-1/2 -translate-y-1/2 rounded-full animate-reveal-menu-left'
-              : 'top-1/2 -translate-y-1/2 rounded-full animate-reveal-theme',
-          ]
-        : ['right-0 rounded-[10px] animate-reveal-menu', placement === 'top' ? 'bottom-[calc(100%+4px)]' : 'top-[calc(100%+4px)]'],
-      panelClass,
-    ]}
+    class:list={['dropdown-panel', panelClass]}
     data-dropdown-panel
     hidden
   >
@@ -46,30 +37,40 @@ const panelId = `${name}-panel`;
 </div>
 
 <style>
-  /* Keep the hover area connected across the gap to the menu button. */
-  [data-dropdown='navigation'][data-placement='left'] [data-dropdown-panel]::after {
-    content: '';
+  .dropdown-panel {
     position: absolute;
-    top: 0;
-    left: 100%;
-    width: 11px;
-    height: 100%;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 40;
+    max-width: calc(100vw - 40px);
+    max-height: calc(100svh - 100px);
+    overflow: auto;
+    padding: 4px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--background);
+    box-shadow: 0 8px 28px rgb(0 0 0 / 8%);
+    animation: dropdown-enter 160ms ease-out;
   }
 
-  @media (max-width: 400px) {
-    [data-dropdown='navigation'][data-placement='left'] [data-dropdown-panel] {
-      top: calc(100% + 4px);
-      right: 0;
-      transform: none;
-      animation: none;
-    }
+  [data-placement='top'] .dropdown-panel { top: auto; bottom: calc(100% + 8px); }
+  [data-placement='left'] .dropdown-panel { top: 50%; right: calc(100% + 12px); transform: translateY(-50%); }
 
-    [data-dropdown='navigation'][data-placement='left'] [data-dropdown-panel]::after {
-      top: -5px;
-      left: auto;
+  @keyframes dropdown-enter {
+    from { opacity: 0; translate: 0 -4px; }
+    to { opacity: 1; translate: 0 0; }
+  }
+
+  @media (max-width: 600px) {
+    [data-placement='left'] .dropdown-panel {
+      top: calc(100% + 8px);
       right: 0;
-      width: 44px;
-      height: 5px;
+      width: min(240px, calc(100vw - 40px));
+      transform: none;
     }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dropdown-panel { animation: none; }
   }
 </style>

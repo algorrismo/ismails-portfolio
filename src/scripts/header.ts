@@ -15,25 +15,33 @@ function openGroup(group: typeof groups[number]) {
 }
 groups.forEach(group => {
   group.toggle.hidden = false;
-  if (group.root.dataset.dropdown === 'navigation') {
-    group.root.addEventListener('pointerenter', event => {
-      if (event.pointerType === 'mouse' && matchMedia('(hover: hover)').matches) openGroup(group);
-    });
-    group.root.addEventListener('pointerleave', event => {
-      if (event.pointerType === 'mouse' && !group.panel.contains(document.activeElement)) setOpen(group, false);
-    });
-  }
+  // Keep hover-opened menus available while the pointer moves to their links.
+  // Dismiss through the toggle, an outside click, Escape, or focus leaving.
+  group.root.addEventListener('pointerenter', event => {
+    if (event.pointerType === 'mouse' && matchMedia('(hover: hover)').matches) openGroup(group);
+  });
   group.toggle.addEventListener('click', () => group.panel.hidden ? openGroup(group) : setOpen(group, false));
   group.root.addEventListener('focusout', event => {
-    if (!group.root.contains(event.relatedTarget as Node)) setOpen(group, false);
+    if (event.relatedTarget) {
+      if (!group.root.contains(event.relatedTarget as Node)) setOpen(group, false);
+      return;
+    }
+    // Native touch focus can settle after the microtask checkpoint. Wait for
+    // the next task so moving from the toggle to a link cannot hide that link.
+    window.setTimeout(() => {
+      if (!group.root.contains(document.activeElement)) setOpen(group, false);
+    }, 0);
   });
   group.root.addEventListener('keydown', event => {
-    const key = group.root.dataset.placement === 'left'
+    if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return;
+    const horizontal = group.root.dataset.placement === 'left' && matchMedia('(min-width: 601px)').matches;
+    const key = horizontal
       ? ({ ArrowRight: 'ArrowDown', ArrowLeft: 'ArrowUp' }[event.key] ?? event.key)
       : event.key;
     if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(key)) return;
     event.preventDefault();
-    const items = Array.from(group.panel.querySelectorAll<HTMLElement>('a, button'));
+    const items = Array.from(group.panel.querySelectorAll<HTMLElement>('a[href], button:not(:disabled)'));
+    if (!items.length) return;
     if (group.panel.hidden) {
       openGroup(group);
       (key === 'ArrowUp' || key === 'End' ? items.at(-1) : items[0])?.focus();
@@ -56,6 +64,7 @@ document.addEventListener('keydown', event => {
 const themeToggles = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]'));
 const themeIcons = Array.from(document.querySelectorAll<HTMLElement>('[data-theme-icon]'));
 const themeChoices = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-theme-choice]'));
+const themeControls = Array.from(document.querySelectorAll<HTMLElement>('[data-theme-controls]'));
 const media = matchMedia('(prefers-color-scheme: dark)');
 let hasThemePreference = false;
 try {
@@ -75,6 +84,7 @@ function syncTheme(dark = media.matches) {
     button.hidden = false;
   });
   themeChoices.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.themeChoice === activeTheme)));
+  themeControls.forEach(control => control.hidden = false);
 }
 syncTheme(document.documentElement.dataset.theme === 'dark');
 media.addEventListener('change', () => {
@@ -95,7 +105,8 @@ function toggleTheme() {
 themeChoices.forEach(button => button.addEventListener('click', () => chooseTheme(button.dataset.themeChoice === 'dark')));
 themeToggles.forEach(button => button.addEventListener('click', toggleTheme));
 document.addEventListener('keydown', event => {
-  if (event.defaultPrevented || event.repeat || event.isComposing || event.ctrlKey || event.metaKey || event.altKey || event.key.toLowerCase() !== 't') return;
+  if (event.defaultPrevented || event.repeat || event.isComposing || event.ctrlKey || event.metaKey ||
+    !event.altKey || !event.shiftKey || event.key.toLowerCase() !== 't') return;
   const target = event.target;
   if (target instanceof HTMLElement && (target.isContentEditable || target.closest('input, textarea, select, [role="textbox"]'))) return;
   event.preventDefault();

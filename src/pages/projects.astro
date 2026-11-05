@@ -1,0 +1,18 @@
+---
+import { ArrowLeft } from '@lucide/astro';
+import Page from '../layouts/Page.astro';
+import ProjectList from '../components/work/ProjectList.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import { profile } from '../data/profile';
+---
+<Page title={`Projects — ${profile.name}`}>
+  <div class="page-intro">
+    <h1 class="page-title">Projects</h1>
+    <p class="page-description">A few things I've built while exploring the web, desktop software, and graphics.</p>
+  </div>
+  <div class="content-section"><ProjectList /></div>
+  <footer class="page-footer">
+    <a href="/"><ArrowLeft size={16} stroke-width={1.5} aria-hidden="true" /> Back to home</a>
+    <ThemeToggle />
+  </footer>
+</Page>

@@ -4,7 +4,7 @@ import {
   Layers,
 } from '@lucide/astro';
 import HeaderDropdown from './HeaderDropdown.astro';
-import { profile } from '../data/portfolio';
+import { profile } from '../data/profile';
 import { destinations } from '../data/navigation';
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '');
@@ -15,7 +15,7 @@ const navigationIcons: Record<string, typeof Folder> = {
   uses: Coffee,
   experiments: FlaskConical,
 };
-const linkClass = 'navigation-link relative grid size-11 shrink-0 place-items-center rounded-full transition-colors duration-150 focus-visible:-outline-offset-2 motion-reduce:transition-none';
+const linkClass = 'navigation-link';
 ---
 <header class="site-header">
   <a href="/" class="identity" aria-label={`${profile.name}, home`}>
@@ -33,27 +33,54 @@ const linkClass = 'navigation-link relative grid size-11 shrink-0 place-items-ce
       <Fragment slot="icon">
         <span class="menu-mark" aria-hidden="true"><span></span><span></span></span>
       </Fragment>
-      <nav class="flex items-center gap-0.5" aria-label="Main navigation">
+      <nav class="navigation-items" aria-label="Main navigation">
         {destinations.map(({ slug, title }) => {
           const Icon = navigationIcons[slug] ?? Folder;
           return (
             <a class={linkClass} data-route={slug} href={`/${slug}/`} aria-label={title} aria-current={currentPath === `/${slug}` ? 'page' : undefined}>
               <Icon size={16} stroke-width={1.6} aria-hidden="true" />
-              <span class="route-tooltip" aria-hidden="true">{title}</span>
+              <span class="route-label">{title}</span>
             </a>
           );
         })}
       </nav>
     </HeaderDropdown>
   </div>
+  <noscript>
+    <nav class="fallback-navigation" aria-label="Main navigation">
+      {destinations.map(({ slug, title }) => (
+        <a href={`/${slug}/`} aria-current={currentPath === `/${slug}` ? 'page' : undefined}>{title}</a>
+      ))}
+    </nav>
+  </noscript>
 </header>
 
 <style>
+  .navigation-items { display: flex; gap: 4px; }
+
   .navigation-link {
     --accent: #5964c7;
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 58px;
+    min-height: 60px;
+    padding: 8px;
+    border-radius: 8px;
     color: var(--accent);
     background: transparent;
+    transition: background-color 150ms ease;
+    outline-offset: -3px;
   }
+
+  .route-label { color: var(--muted); font-size: 12px; line-height: 1.4; }
+  .navigation-link[aria-current='page'] .route-label { color: var(--ink); font-weight: 600; }
+  .fallback-navigation { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+  .fallback-navigation a { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; color: var(--muted); }
+  .fallback-navigation a[aria-current='page'] { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
 
   .navigation-link[data-route='projects'] { --accent: #a78040; }
   .navigation-link[data-route='stack'] { --accent: #8271ad; }
@@ -72,39 +99,10 @@ const linkClass = 'navigation-link relative grid size-11 shrink-0 place-items-ce
     outline-color: var(--muted);
   }
 
-  .route-tooltip {
-    position: absolute;
-    bottom: calc(100% + 6px);
-    left: 50%;
-    padding: 3px 8px;
-    border: 1px solid var(--line);
-    border-radius: 7px;
-    background: var(--background);
-    color: var(--accent);
-    box-shadow: 0 3px 10px rgb(0 0 0 / 5%);
-    font-family: var(--font-sans);
-    font-size: 12px;
-    line-height: 1.4;
-    white-space: nowrap;
-    pointer-events: none;
-    opacity: 0;
-    visibility: hidden;
-    transform: translate(-50%, 3px);
-    transition: opacity 140ms ease, transform 140ms ease, visibility 140ms;
-  }
-
-  .navigation-link:focus-visible .route-tooltip {
-    opacity: 1;
-    visibility: visible;
-    transform: translate(-50%, 0);
-  }
-
-  @media (hover: hover) {
-    .navigation-link:hover .route-tooltip {
-      opacity: 1;
-      visibility: visible;
-      transform: translate(-50%, 0);
-    }
+  @media (max-width: 600px) {
+    .navigation-items { display: grid; gap: 4px; }
+    .navigation-link { flex-direction: row; justify-content: start; gap: 12px; min-height: 44px; padding: 10px 12px; }
+    .route-label { font-size: 14px; }
   }
 
   .menu-mark {
@@ -121,16 +119,16 @@ const linkClass = 'navigation-link relative grid size-11 shrink-0 place-items-ce
     height: 1px;
     border-radius: 1px;
     background: currentColor;
-    transition: width 180ms ease, top 180ms ease, transform 180ms ease;
+    transition: transform 180ms ease, opacity 180ms ease;
   }
 
-  .menu-mark span:last-child { top: 11px; width: 10px; }
-  :global(button:hover) .menu-mark span:last-child { width: 16px; }
-  :global(button[aria-expanded='true']) .menu-mark span { top: 8px; transform: rotate(45deg); }
-  :global(button[aria-expanded='true']) .menu-mark span:last-child { width: 16px; transform: rotate(-45deg); }
+  .menu-mark span:last-child { top: 11px; transform: scaleX(.625); transform-origin: left; }
+  :global(button:hover) .menu-mark span:last-child { transform: scaleX(1); }
+  :global(button[aria-expanded='true']) .menu-mark span { transform: translateY(3px) rotate(45deg); }
+  :global(button[aria-expanded='true']) .menu-mark span:last-child { transform: translateY(-3px) rotate(-45deg); }
 
   @media (prefers-reduced-motion: reduce) {
-    .menu-mark span, .route-tooltip { transition: none; }
+    .menu-mark span, .navigation-link { transition: none; }
   }
 </style>
 
